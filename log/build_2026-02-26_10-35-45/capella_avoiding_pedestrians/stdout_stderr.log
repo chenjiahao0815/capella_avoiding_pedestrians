@@ -1,0 +1,8 @@
+[ 50%] [32mBuilding CXX object CMakeFiles/behavior_detection_node.dir/src/avoiding_pedestrians.cpp.o[0m
+[01m[K/home/linux/c++/src/capella_avoiding_pedestrians/src/avoiding_pedestrians.cpp:1:10:[m[K [01;31m[Kfatal error: [m[Kavoiding_pedestrians.hpp: No such file or directory
+    1 | #include [01;31m[K"avoiding_pedestrians.hpp"[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+gmake[2]: *** [CMakeFiles/behavior_detection_node.dir/build.make:76: CMakeFiles/behavior_detection_node.dir/src/avoiding_pedestrians.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:137: CMakeFiles/behavior_detection_node.dir/all] Error 2
+gmake: *** [Makefile:146: all] Error 2

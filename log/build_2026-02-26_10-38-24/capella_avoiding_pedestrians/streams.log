@@ -1,0 +1,28 @@
+[0.011s] Invoking command in '/home/linux/c++/build/capella_avoiding_pedestrians': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/opt/ros/humble /usr/bin/cmake --build /home/linux/c++/build/capella_avoiding_pedestrians -- -j16 -l16
+[0.060s] [ 50%] [32mBuilding CXX object CMakeFiles/behavior_detection_node.dir/src/avoiding_pedestrians.cpp.o[0m
+[17.257s] [100%] [32m[1mLinking CXX executable behavior_detection_node[0m
+[18.599s] [100%] Built target behavior_detection_node
+[18.609s] Invoked command in '/home/linux/c++/build/capella_avoiding_pedestrians' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/opt/ros/humble /usr/bin/cmake --build /home/linux/c++/build/capella_avoiding_pedestrians -- -j16 -l16
+[18.620s] Invoking command in '/home/linux/c++/build/capella_avoiding_pedestrians': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/opt/ros/humble /usr/bin/cmake --install /home/linux/c++/build/capella_avoiding_pedestrians
+[18.625s] -- Install configuration: ""
+[18.626s] -- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/lib/capella_avoiding_pedestrians/behavior_detection_node
+[18.632s] -- Set runtime path of "/home/linux/c++/install/capella_avoiding_pedestrians/lib/capella_avoiding_pedestrians/behavior_detection_node" to ""
+[18.632s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/include
+[18.632s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/include/capella_avoiding_pedestrians
+[18.632s] -- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/include/capella_avoiding_pedestrians/avoiding_pedestrians.hpp
+[18.632s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/ament_index/resource_index/package_run_dependencies/capella_avoiding_pedestrians
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/ament_index/resource_index/parent_prefix_path/capella_avoiding_pedestrians
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/ament_prefix_path.sh
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/ament_prefix_path.dsv
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/path.sh
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/path.dsv
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.bash
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.sh
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.zsh
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.dsv
+[18.633s] -- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/package.dsv
+[18.633s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/ament_index/resource_index/packages/capella_avoiding_pedestrians
+[18.634s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/cmake/capella_avoiding_pedestriansConfig.cmake
+[18.634s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/cmake/capella_avoiding_pedestriansConfig-version.cmake
+[18.634s] -- Up-to-date: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/package.xml
+[18.635s] Invoked command in '/home/linux/c++/build/capella_avoiding_pedestrians' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/opt/ros/humble /usr/bin/cmake --install /home/linux/c++/build/capella_avoiding_pedestrians

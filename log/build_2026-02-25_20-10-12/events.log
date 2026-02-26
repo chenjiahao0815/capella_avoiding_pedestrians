@@ -1,0 +1,219 @@
+[0.000000] (-) TimerEvent: {}
+[0.000411] (capella_avoiding_pedestrians) JobQueued: {'identifier': 'capella_avoiding_pedestrians', 'dependencies': OrderedDict()}
+[0.000603] (capella_avoiding_pedestrians) JobStarted: {'identifier': 'capella_avoiding_pedestrians'}
+[0.007274] (capella_avoiding_pedestrians) JobProgress: {'identifier': 'capella_avoiding_pedestrians', 'progress': 'cmake'}
+[0.009243] (capella_avoiding_pedestrians) JobProgress: {'identifier': 'capella_avoiding_pedestrians', 'progress': 'build'}
+[0.009337] (capella_avoiding_pedestrians) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/linux/c++/build/capella_avoiding_pedestrians', '--', '-j16', '-l16'], 'cwd': '/home/linux/c++/build/capella_avoiding_pedestrians', 'env': OrderedDict([('PYTHON_BASIC_REPL', '1'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'linux'), ('GIT_ASKPASS', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/linux/python/ros2_new_ws/install/capella_ros_msg/lib://home/linux/python/ros2_new_ws/install/capella_ros_msg/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins::/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:'), ('HOME', '/home/linux'), ('OLDPWD', '/home/linux/c++'), ('TERM_PROGRAM_VERSION', '1.109.5'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-19faec17-3906-4ab6-aa1c-d364091996f0.sock'), ('GAZEBO_MASTER_URI', 'http://localhost:11345'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/node'), ('PYDEVD_DISABLE_FILE_VALIDATION', '1'), ('BUNDLED_DEBUGPY_PATH', '/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/libs/debugpy'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('WAYLAND_DISPLAY', '172.28.208.1:0'), ('COLCON_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install:/home/linux/python/install://home/linux/python/ros2_new_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'linux'), ('NAME', 'DESKTOP-230CIAL'), ('WSL_INTEROP', '/run/WSL/2442_interop'), ('PULSE_SERVER', 'tcp:172.28.208.1'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', '/usr/share/gazebo-11/models:/usr/share/gazebo-11/models::/opt/ros/humble/share/turtlebot3_gazebo/models:/opt/ros/humble/share/turtlebot3_gazebo/worlds:/opt/ros/humble/share/turtlebot3_gazebo/models:/opt/ros/humble/share/turtlebot3_gazebo/worlds'), ('ROS_LOCALHOST_ONLY', '0'), ('HISTCONTROL', 'ignorespace'), ('OGRE_RESOURCE_PATH', '/usr/lib/x86_64-linux-gnu/OGRE-1.9.0'), ('PATH', '/home/linux/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/linux/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/remote-cli:/home/linux/.local/bin:/home/linux/python/ros2_new_ws/install/capella_clean_garbage/bin://home/linux/python/ros2_new_ws/install/capella_clean_garbage/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/bin:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/libnvvp:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2023.2.2/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/OVERPASS/mingw32/bin:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Users/OVERPASS/anaconda3:/mnt/c/Users/OVERPASS/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/OVERPASS/anaconda3/Library/usr/bin:/mnt/c/Users/OVERPASS/anaconda3/Library/bin:/mnt/c/Users/OVERPASS/anaconda3/Scripts:/mnt/c/Users/OVERPASS/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2025.1.2/bin:/mnt/c/Users/OVERPASS/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', '172.28.208.1:0'), ('VSCODE_DEBUGPY_ADAPTER_ENDPOINTS', '/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-5da57dd7b33dbfa9.txt'), ('LANG', 'en_US.UTF-8'), ('PYTHONSTARTUP', '/home/linux/.vscode-server/data/User/workspaceStorage/ca62a26042eb251ec13e0a48ef5416d2/ms-python.python/pythonrc.py'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-3b6c778b89.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/home/linux/python/ros2_new_ws/install/capella_ros_msg://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_ros_msg:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GAZEBO_RESOURCE_PATH', '/usr/share/gazebo-11:/usr/share/gazebo-11:'), ('GAZEBO_MODEL_DATABASE_URI', 'http://models.gazebosim.org'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('GIT_PAGER', 'cat'), ('PWD', '/home/linux/c++/build/capella_avoiding_pedestrians'), ('TURTLEBOT3_MODEL', 'waffle'), ('GAZEBO_PLUGIN_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/linux/python/ros2_new_ws/install/capella_clean_garbage/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/install/capella_ros_msg/local/lib/python3.10/dist-packages:/home/linux/python/ros2_new_ws/build/capella_clean_garbage://home/linux/python/ros2_new_ws/install/capella_clean_garbage/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/build/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes/lib/python3.10/site-packages://home/linux/python/ros2_new_ws/install/capella_ros_msg/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('CMAKE_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install/capella_ros_msg://home/linux/python/ros2_new_ws/install/capella_ros_msg:/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/opt/ros/humble'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up')]), 'shell': False}
+[0.030079] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.099647] (-) TimerEvent: {}
+[0.141483] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found builtin_interfaces: 1.2.1 (/opt/ros/humble/share/builtin_interfaces/cmake)\n'}
+[0.199807] (-) TimerEvent: {}
+[0.245019] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.246396] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.250321] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.256887] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.265410] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.273563] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found geometry_msgs: 4.8.0 (/opt/ros/humble/share/geometry_msgs/cmake)\n'}
+[0.291961] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found nav_msgs: 4.8.0 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[0.299947] (-) TimerEvent: {}
+[0.307387] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[0.326021] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[0.327553] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.400121] (-) TimerEvent: {}
+[0.500548] (-) TimerEvent: {}
+[0.600869] (-) TimerEvent: {}
+[0.701190] (-) TimerEvent: {}
+[0.801502] (-) TimerEvent: {}
+[0.901844] (-) TimerEvent: {}
+[1.002157] (-) TimerEvent: {}
+[1.102499] (-) TimerEvent: {}
+[1.202903] (-) TimerEvent: {}
+[1.303464] (-) TimerEvent: {}
+[1.403771] (-) TimerEvent: {}
+[1.504105] (-) TimerEvent: {}
+[1.604474] (-) TimerEvent: {}
+[1.704788] (-) TimerEvent: {}
+[1.805103] (-) TimerEvent: {}
+[1.905491] (-) TimerEvent: {}
+[2.005857] (-) TimerEvent: {}
+[2.106207] (-) TimerEvent: {}
+[2.206552] (-) TimerEvent: {}
+[2.306872] (-) TimerEvent: {}
+[2.407162] (-) TimerEvent: {}
+[2.507442] (-) TimerEvent: {}
+[2.607750] (-) TimerEvent: {}
+[2.708049] (-) TimerEvent: {}
+[2.808390] (-) TimerEvent: {}
+[2.908678] (-) TimerEvent: {}
+[3.008937] (-) TimerEvent: {}
+[3.109276] (-) TimerEvent: {}
+[3.203558] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[3.209355] (-) TimerEvent: {}
+[3.229959] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found sensor_msgs: 4.8.0 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[3.240873] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found tf2: 0.25.12 (/opt/ros/humble/share/tf2/cmake)\n'}
+[3.243500] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found tf2_geometry_msgs: 0.25.12 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)\n'}
+[3.245344] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)\n'}
+[3.246229] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[3.294679] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found visualization_msgs: 4.8.0 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[3.309450] (-) TimerEvent: {}
+[3.352394] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Configuring done\n'}
+[3.364146] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Generating done\n'}
+[3.372377] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Build files have been written to: /home/linux/c++/build/capella_avoiding_pedestrians\n'}
+[3.403351] (capella_avoiding_pedestrians) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/behavior_detection_node.dir/src/avoiding_pedestrians.cpp.o\x1b[0m\n'}
+[3.409544] (-) TimerEvent: {}
+[3.509785] (-) TimerEvent: {}
+[3.610051] (-) TimerEvent: {}
+[3.710314] (-) TimerEvent: {}
+[3.810571] (-) TimerEvent: {}
+[3.910832] (-) TimerEvent: {}
+[4.011118] (-) TimerEvent: {}
+[4.111406] (-) TimerEvent: {}
+[4.211734] (-) TimerEvent: {}
+[4.312027] (-) TimerEvent: {}
+[4.412361] (-) TimerEvent: {}
+[4.512648] (-) TimerEvent: {}
+[4.612953] (-) TimerEvent: {}
+[4.713246] (-) TimerEvent: {}
+[4.813593] (-) TimerEvent: {}
+[4.914023] (-) TimerEvent: {}
+[5.014338] (-) TimerEvent: {}
+[5.114650] (-) TimerEvent: {}
+[5.214966] (-) TimerEvent: {}
+[5.315237] (-) TimerEvent: {}
+[5.415485] (-) TimerEvent: {}
+[5.515895] (-) TimerEvent: {}
+[5.616261] (-) TimerEvent: {}
+[5.716577] (-) TimerEvent: {}
+[5.816895] (-) TimerEvent: {}
+[5.917208] (-) TimerEvent: {}
+[6.017519] (-) TimerEvent: {}
+[6.117822] (-) TimerEvent: {}
+[6.218106] (-) TimerEvent: {}
+[6.318455] (-) TimerEvent: {}
+[6.418756] (-) TimerEvent: {}
+[6.519066] (-) TimerEvent: {}
+[6.619331] (-) TimerEvent: {}
+[6.719632] (-) TimerEvent: {}
+[6.819961] (-) TimerEvent: {}
+[6.920397] (-) TimerEvent: {}
+[7.020776] (-) TimerEvent: {}
+[7.121038] (-) TimerEvent: {}
+[7.221339] (-) TimerEvent: {}
+[7.321628] (-) TimerEvent: {}
+[7.421926] (-) TimerEvent: {}
+[7.522204] (-) TimerEvent: {}
+[7.622481] (-) TimerEvent: {}
+[7.722789] (-) TimerEvent: {}
+[7.823138] (-) TimerEvent: {}
+[7.923446] (-) TimerEvent: {}
+[8.023743] (-) TimerEvent: {}
+[8.124022] (-) TimerEvent: {}
+[8.224331] (-) TimerEvent: {}
+[8.324615] (-) TimerEvent: {}
+[8.424924] (-) TimerEvent: {}
+[8.525213] (-) TimerEvent: {}
+[8.625499] (-) TimerEvent: {}
+[8.725787] (-) TimerEvent: {}
+[8.826088] (-) TimerEvent: {}
+[8.926383] (-) TimerEvent: {}
+[9.026723] (-) TimerEvent: {}
+[9.127029] (-) TimerEvent: {}
+[9.227339] (-) TimerEvent: {}
+[9.327647] (-) TimerEvent: {}
+[9.427937] (-) TimerEvent: {}
+[9.528244] (-) TimerEvent: {}
+[9.628550] (-) TimerEvent: {}
+[9.728822] (-) TimerEvent: {}
+[9.829090] (-) TimerEvent: {}
+[9.929361] (-) TimerEvent: {}
+[10.029701] (-) TimerEvent: {}
+[10.129980] (-) TimerEvent: {}
+[10.230333] (-) TimerEvent: {}
+[10.330680] (-) TimerEvent: {}
+[10.431075] (-) TimerEvent: {}
+[10.531333] (-) TimerEvent: {}
+[10.631604] (-) TimerEvent: {}
+[10.731876] (-) TimerEvent: {}
+[10.832207] (-) TimerEvent: {}
+[10.932553] (-) TimerEvent: {}
+[11.032823] (-) TimerEvent: {}
+[11.133134] (-) TimerEvent: {}
+[11.233416] (-) TimerEvent: {}
+[11.333746] (-) TimerEvent: {}
+[11.434047] (-) TimerEvent: {}
+[11.534324] (-) TimerEvent: {}
+[11.634648] (-) TimerEvent: {}
+[11.734929] (-) TimerEvent: {}
+[11.835211] (-) TimerEvent: {}
+[11.935522] (-) TimerEvent: {}
+[12.035805] (-) TimerEvent: {}
+[12.136044] (-) TimerEvent: {}
+[12.236318] (-) TimerEvent: {}
+[12.336599] (-) TimerEvent: {}
+[12.436881] (-) TimerEvent: {}
+[12.537149] (-) TimerEvent: {}
+[12.637429] (-) TimerEvent: {}
+[12.737718] (-) TimerEvent: {}
+[12.837982] (-) TimerEvent: {}
+[12.938253] (-) TimerEvent: {}
+[13.038530] (-) TimerEvent: {}
+[13.138820] (-) TimerEvent: {}
+[13.239159] (-) TimerEvent: {}
+[13.339491] (-) TimerEvent: {}
+[13.439772] (-) TimerEvent: {}
+[13.540021] (-) TimerEvent: {}
+[13.640358] (-) TimerEvent: {}
+[13.740674] (-) TimerEvent: {}
+[13.840997] (-) TimerEvent: {}
+[13.941244] (-) TimerEvent: {}
+[14.041528] (-) TimerEvent: {}
+[14.141802] (-) TimerEvent: {}
+[14.242055] (-) TimerEvent: {}
+[14.342307] (-) TimerEvent: {}
+[14.442569] (-) TimerEvent: {}
+[14.542871] (-) TimerEvent: {}
+[14.643143] (-) TimerEvent: {}
+[14.743421] (-) TimerEvent: {}
+[14.843711] (-) TimerEvent: {}
+[14.943984] (-) TimerEvent: {}
+[15.044283] (-) TimerEvent: {}
+[15.144604] (-) TimerEvent: {}
+[15.244907] (-) TimerEvent: {}
+[15.340318] (capella_avoiding_pedestrians) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable behavior_detection_node\x1b[0m\n'}
+[15.344977] (-) TimerEvent: {}
+[15.445232] (-) TimerEvent: {}
+[15.545555] (-) TimerEvent: {}
+[15.645825] (-) TimerEvent: {}
+[15.746126] (-) TimerEvent: {}
+[15.846471] (-) TimerEvent: {}
+[15.946779] (-) TimerEvent: {}
+[16.047084] (-) TimerEvent: {}
+[16.125345] (capella_avoiding_pedestrians) StdoutLine: {'line': b'[100%] Built target behavior_detection_node\n'}
+[16.134531] (capella_avoiding_pedestrians) CommandEnded: {'returncode': 0}
+[16.135223] (capella_avoiding_pedestrians) JobProgress: {'identifier': 'capella_avoiding_pedestrians', 'progress': 'install'}
+[16.142688] (capella_avoiding_pedestrians) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/linux/c++/build/capella_avoiding_pedestrians'], 'cwd': '/home/linux/c++/build/capella_avoiding_pedestrians', 'env': OrderedDict([('PYTHON_BASIC_REPL', '1'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'linux'), ('GIT_ASKPASS', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/linux/python/ros2_new_ws/install/capella_ros_msg/lib://home/linux/python/ros2_new_ws/install/capella_ros_msg/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins::/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:'), ('HOME', '/home/linux'), ('OLDPWD', '/home/linux/c++'), ('TERM_PROGRAM_VERSION', '1.109.5'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-19faec17-3906-4ab6-aa1c-d364091996f0.sock'), ('GAZEBO_MASTER_URI', 'http://localhost:11345'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/node'), ('PYDEVD_DISABLE_FILE_VALIDATION', '1'), ('BUNDLED_DEBUGPY_PATH', '/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/libs/debugpy'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('WAYLAND_DISPLAY', '172.28.208.1:0'), ('COLCON_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install:/home/linux/python/install://home/linux/python/ros2_new_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'linux'), ('NAME', 'DESKTOP-230CIAL'), ('WSL_INTEROP', '/run/WSL/2442_interop'), ('PULSE_SERVER', 'tcp:172.28.208.1'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', '/usr/share/gazebo-11/models:/usr/share/gazebo-11/models::/opt/ros/humble/share/turtlebot3_gazebo/models:/opt/ros/humble/share/turtlebot3_gazebo/worlds:/opt/ros/humble/share/turtlebot3_gazebo/models:/opt/ros/humble/share/turtlebot3_gazebo/worlds'), ('ROS_LOCALHOST_ONLY', '0'), ('HISTCONTROL', 'ignorespace'), ('OGRE_RESOURCE_PATH', '/usr/lib/x86_64-linux-gnu/OGRE-1.9.0'), ('PATH', '/home/linux/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/linux/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/remote-cli:/home/linux/.local/bin:/home/linux/python/ros2_new_ws/install/capella_clean_garbage/bin://home/linux/python/ros2_new_ws/install/capella_clean_garbage/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/bin:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/libnvvp:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2023.2.2/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/OVERPASS/mingw32/bin:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Users/OVERPASS/anaconda3:/mnt/c/Users/OVERPASS/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/OVERPASS/anaconda3/Library/usr/bin:/mnt/c/Users/OVERPASS/anaconda3/Library/bin:/mnt/c/Users/OVERPASS/anaconda3/Scripts:/mnt/c/Users/OVERPASS/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2025.1.2/bin:/mnt/c/Users/OVERPASS/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', '172.28.208.1:0'), ('VSCODE_DEBUGPY_ADAPTER_ENDPOINTS', '/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-5da57dd7b33dbfa9.txt'), ('LANG', 'en_US.UTF-8'), ('PYTHONSTARTUP', '/home/linux/.vscode-server/data/User/workspaceStorage/ca62a26042eb251ec13e0a48ef5416d2/ms-python.python/pythonrc.py'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-3b6c778b89.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/home/linux/python/ros2_new_ws/install/capella_ros_msg://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_ros_msg:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GAZEBO_RESOURCE_PATH', '/usr/share/gazebo-11:/usr/share/gazebo-11:'), ('GAZEBO_MODEL_DATABASE_URI', 'http://models.gazebosim.org'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('GIT_PAGER', 'cat'), ('PWD', '/home/linux/c++/build/capella_avoiding_pedestrians'), ('TURTLEBOT3_MODEL', 'waffle'), ('GAZEBO_PLUGIN_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/linux/python/ros2_new_ws/install/capella_clean_garbage/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/install/capella_ros_msg/local/lib/python3.10/dist-packages:/home/linux/python/ros2_new_ws/build/capella_clean_garbage://home/linux/python/ros2_new_ws/install/capella_clean_garbage/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/build/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes/lib/python3.10/site-packages://home/linux/python/ros2_new_ws/install/capella_ros_msg/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('CMAKE_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install/capella_ros_msg://home/linux/python/ros2_new_ws/install/capella_ros_msg:/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/opt/ros/humble'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up')]), 'shell': False}
+[16.147166] (-) TimerEvent: {}
+[16.148469] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[16.148843] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/lib/capella_avoiding_pedestrians/behavior_detection_node\n'}
+[16.154116] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Set runtime path of "/home/linux/c++/install/capella_avoiding_pedestrians/lib/capella_avoiding_pedestrians/behavior_detection_node" to ""\n'}
+[16.154261] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/include\n'}
+[16.154363] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/include/capella_avoiding_pedestrians\n'}
+[16.154569] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/include/capella_avoiding_pedestrians/avoiding_pedestrians.hpp\n'}
+[16.154974] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/ament_index/resource_index/package_run_dependencies/capella_avoiding_pedestrians\n'}
+[16.155199] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/ament_index/resource_index/parent_prefix_path/capella_avoiding_pedestrians\n'}
+[16.155371] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/ament_prefix_path.sh\n'}
+[16.155552] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/ament_prefix_path.dsv\n'}
+[16.155624] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/path.sh\n'}
+[16.155753] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/environment/path.dsv\n'}
+[16.155828] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.bash\n'}
+[16.155918] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.sh\n'}
+[16.156110] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.zsh\n'}
+[16.156228] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/local_setup.dsv\n'}
+[16.156272] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/package.dsv\n'}
+[16.156561] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/ament_index/resource_index/packages/capella_avoiding_pedestrians\n'}
+[16.156912] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/cmake/capella_avoiding_pedestriansConfig.cmake\n'}
+[16.157127] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/cmake/capella_avoiding_pedestriansConfig-version.cmake\n'}
+[16.157174] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Installing: /home/linux/c++/install/capella_avoiding_pedestrians/share/capella_avoiding_pedestrians/package.xml\n'}
+[16.158937] (capella_avoiding_pedestrians) CommandEnded: {'returncode': 0}
+[16.172928] (capella_avoiding_pedestrians) JobEnded: {'identifier': 'capella_avoiding_pedestrians', 'rc': 0}
+[16.173997] (-) EventReactorShutdown: {}

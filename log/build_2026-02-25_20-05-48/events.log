@@ -1,0 +1,491 @@
+[0.000000] (-) TimerEvent: {}
+[0.000357] (capella_avoiding_pedestrians) JobQueued: {'identifier': 'capella_avoiding_pedestrians', 'dependencies': OrderedDict()}
+[0.000519] (capella_avoiding_pedestrians) JobStarted: {'identifier': 'capella_avoiding_pedestrians'}
+[0.006245] (capella_avoiding_pedestrians) JobProgress: {'identifier': 'capella_avoiding_pedestrians', 'progress': 'cmake'}
+[0.007279] (capella_avoiding_pedestrians) Command: {'cmd': ['/usr/bin/cmake', '/home/linux/c++/src/capella_avoiding_pedestrians', '-DCMAKE_INSTALL_PREFIX=/home/linux/c++/install/capella_avoiding_pedestrians'], 'cwd': '/home/linux/c++/build/capella_avoiding_pedestrians', 'env': OrderedDict([('PYTHON_BASIC_REPL', '1'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'linux'), ('GIT_ASKPASS', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/linux/python/ros2_new_ws/install/capella_ros_msg/lib://home/linux/python/ros2_new_ws/install/capella_ros_msg/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins::/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:'), ('HOME', '/home/linux'), ('OLDPWD', '/home/linux/c++'), ('TERM_PROGRAM_VERSION', '1.109.5'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-19faec17-3906-4ab6-aa1c-d364091996f0.sock'), ('GAZEBO_MASTER_URI', 'http://localhost:11345'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/node'), ('PYDEVD_DISABLE_FILE_VALIDATION', '1'), ('BUNDLED_DEBUGPY_PATH', '/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/libs/debugpy'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('WAYLAND_DISPLAY', '172.28.208.1:0'), ('COLCON_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install:/home/linux/python/install://home/linux/python/ros2_new_ws/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'linux'), ('NAME', 'DESKTOP-230CIAL'), ('WSL_INTEROP', '/run/WSL/2442_interop'), ('PULSE_SERVER', 'tcp:172.28.208.1'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('GAZEBO_MODEL_PATH', '/usr/share/gazebo-11/models:/usr/share/gazebo-11/models::/opt/ros/humble/share/turtlebot3_gazebo/models:/opt/ros/humble/share/turtlebot3_gazebo/worlds:/opt/ros/humble/share/turtlebot3_gazebo/models:/opt/ros/humble/share/turtlebot3_gazebo/worlds'), ('ROS_LOCALHOST_ONLY', '0'), ('HISTCONTROL', 'ignorespace'), ('OGRE_RESOURCE_PATH', '/usr/lib/x86_64-linux-gnu/OGRE-1.9.0'), ('PATH', '/home/linux/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/linux/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/linux/.vscode-server/bin/072586267e68ece9a47aa43f8c108e0dcbf44622/bin/remote-cli:/home/linux/.local/bin:/home/linux/python/ros2_new_ws/install/capella_clean_garbage/bin://home/linux/python/ros2_new_ws/install/capella_clean_garbage/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/bin:/mnt/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.2/libnvvp:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2023.2.2/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/OVERPASS/mingw32/bin:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Users/OVERPASS/anaconda3:/mnt/c/Users/OVERPASS/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/OVERPASS/anaconda3/Library/usr/bin:/mnt/c/Users/OVERPASS/anaconda3/Library/bin:/mnt/c/Users/OVERPASS/anaconda3/Scripts:/mnt/c/Users/OVERPASS/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/PyCharm 2025.1.2/bin:/mnt/c/Users/OVERPASS/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', '172.28.208.1:0'), ('VSCODE_DEBUGPY_ADAPTER_ENDPOINTS', '/home/linux/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-5da57dd7b33dbfa9.txt'), ('LANG', 'en_US.UTF-8'), ('PYTHONSTARTUP', '/home/linux/.vscode-server/data/User/workspaceStorage/ca62a26042eb251ec13e0a48ef5416d2/ms-python.python/pythonrc.py'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-3b6c778b89.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/home/linux/python/ros2_new_ws/install/capella_ros_msg://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_ros_msg:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('GAZEBO_RESOURCE_PATH', '/usr/share/gazebo-11:/usr/share/gazebo-11:'), ('GAZEBO_MODEL_DATABASE_URI', 'http://models.gazebosim.org'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('GIT_PAGER', 'cat'), ('PWD', '/home/linux/c++/build/capella_avoiding_pedestrians'), ('TURTLEBOT3_MODEL', 'waffle'), ('GAZEBO_PLUGIN_PATH', '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/linux/python/ros2_new_ws/install/capella_clean_garbage/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/install/capella_ros_msg/local/lib/python3.10/dist-packages:/home/linux/python/ros2_new_ws/build/capella_clean_garbage://home/linux/python/ros2_new_ws/install/capella_clean_garbage/lib/python3.10/site-packages:/home/linux/python/ros2_new_ws/build/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes/lib/python3.10/site-packages://home/linux/python/ros2_new_ws/install/capella_ros_msg/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('CMAKE_PREFIX_PATH', '/home/linux/python/ros2_new_ws/install/capella_ros_msg://home/linux/python/ros2_new_ws/install/capella_ros_msg:/home/linux/python/ros2_new_ws/install/capella_clean_garbage:/home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes://home/linux/python/ros2_new_ws/install/capella_clean_garbage://home/linux/python/ros2_new_ws/install/auto_clean_garbage_nodes:/opt/ros/humble'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up')]), 'shell': False}
+[0.075655] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.099689] (-) TimerEvent: {}
+[0.199944] (-) TimerEvent: {}
+[0.290958] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.300054] (-) TimerEvent: {}
+[0.400359] (-) TimerEvent: {}
+[0.451890] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.500441] (-) TimerEvent: {}
+[0.535895] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.540155] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.540374] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.540563] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.542432] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.600551] (-) TimerEvent: {}
+[0.633005] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[0.637318] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[0.637477] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[0.637777] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[0.639904] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.700643] (-) TimerEvent: {}
+[0.750164] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[0.800781] (-) TimerEvent: {}
+[0.817132] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found builtin_interfaces: 1.2.1 (/opt/ros/humble/share/builtin_interfaces/cmake)\n'}
+[0.893769] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.897881] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.900839] (-) TimerEvent: {}
+[0.903781] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.911876] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.922080] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.931943] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found cv_bridge: 3.2.1 (/opt/ros/humble/share/cv_bridge/cmake)\n'}
+[0.968103] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found nav_msgs: 4.8.0 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[0.978749] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found OpenCV: /usr (found version "4.5.4") \n'}
+[0.980014] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[1.000943] (-) TimerEvent: {}
+[1.004558] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[1.006348] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[1.101019] (-) TimerEvent: {}
+[1.201321] (-) TimerEvent: {}
+[1.301623] (-) TimerEvent: {}
+[1.401943] (-) TimerEvent: {}
+[1.502262] (-) TimerEvent: {}
+[1.602539] (-) TimerEvent: {}
+[1.603775] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[1.702630] (-) TimerEvent: {}
+[1.802911] (-) TimerEvent: {}
+[1.903210] (-) TimerEvent: {}
+[2.003485] (-) TimerEvent: {}
+[2.103787] (-) TimerEvent: {}
+[2.204099] (-) TimerEvent: {}
+[2.304425] (-) TimerEvent: {}
+[2.337944] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[2.404486] (-) TimerEvent: {}
+[2.504813] (-) TimerEvent: {}
+[2.605106] (-) TimerEvent: {}
+[2.705389] (-) TimerEvent: {}
+[2.805644] (-) TimerEvent: {}
+[2.905938] (-) TimerEvent: {}
+[3.006246] (-) TimerEvent: {}
+[3.106587] (-) TimerEvent: {}
+[3.206894] (-) TimerEvent: {}
+[3.307207] (-) TimerEvent: {}
+[3.407505] (-) TimerEvent: {}
+[3.507870] (-) TimerEvent: {}
+[3.608150] (-) TimerEvent: {}
+[3.674720] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[3.681234] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[3.708282] (-) TimerEvent: {}
+[3.773736] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[3.773928] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[3.808389] (-) TimerEvent: {}
+[3.857969] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[3.858805] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[3.884896] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found tf2: 0.25.12 (/opt/ros/humble/share/tf2/cmake)\n'}
+[3.891512] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found tf2_geometry_msgs: 0.25.12 (/opt/ros/humble/share/tf2_geometry_msgs/cmake)\n'}
+[3.908499] (-) TimerEvent: {}
+[3.922315] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)\n'}
+[3.923298] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found Eigen3: TRUE (found version "3.4.0") \n'}
+[3.923420] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[3.982945] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found visualization_msgs: 4.8.0 (/opt/ros/humble/share/visualization_msgs/cmake)\n'}
+[3.997198] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.12 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[4.008608] (-) TimerEvent: {}
+[4.061576] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[4.063106] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[4.063365] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.063454] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.063723] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.064036] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.064076] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.064106] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.064136] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.064166] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.064192] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.064217] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.064242] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.064268] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.064293] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.064316] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.064343] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.064372] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.064396] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.064514] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.064552] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.064581] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.064607] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.064637] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.064660] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.064684] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.064708] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.064732] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.064755] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.064780] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.064804] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.064827] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.064849] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.064872] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.064895] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.064918] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.064940] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.064962] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.064987] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.065009] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.065054] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.065147] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.065228] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.065309] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.065391] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.065472] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.065555] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.065635] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.065716] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.065802] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.065885] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.065966] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.066047] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.066183] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.066227] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.066254] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.066279] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.066305] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.066328] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.066351] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.066374] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.066398] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066427] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066452] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066478] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066503] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066527] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066554] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066579] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066602] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066627] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066668] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066708] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066736] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066763] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066789] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.066814] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.066840] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.066873] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.066909] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.066939] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.066964] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.066989] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.067016] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.067055] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.067145] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.067231] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.067312] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.067393] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.067474] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.067554] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.067635] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.067732] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.067764] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.067790] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.067815] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.067840] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.067865] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.067889] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.067914] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.067938] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.067963] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.067987] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.068010] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068034] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.068058] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068082] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.068106] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.068129] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.068152] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.068174] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.068197] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.068220] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.068243] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.068266] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068289] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.068312] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068334] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.068355] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.068377] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.068400] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.068421] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.068443] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.068466] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.068488] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.068510] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068532] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.068553] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068575] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.068606] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.068640] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.068678] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.068741] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.068773] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.068798] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.068822] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.068847] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068870] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.068893] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.068916] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.068939] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.068963] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.068987] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.069009] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.069033] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.069057] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.069084] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.069110] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.069136] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.069164] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.069212] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.069237] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.069261] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.069289] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.069315] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.069366] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.069404] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.069436] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.069465] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.069493] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.069520] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.069557] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.069581] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.069608] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.069635] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.069661] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.069686] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.069710] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.069737] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.069772] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.069800] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.069825] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.069874] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.069901] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.069926] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.069951] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.069975] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.069999] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070024] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070048] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070075] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070107] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070133] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070157] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070180] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070203] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070226] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070249] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070272] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070312] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070335] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070358] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070380] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070403] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070425] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070450] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070478] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070501] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070524] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070551] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070574] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070597] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070620] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070642] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070665] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070689] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070721] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Nested *?+.\n'}
+[4.070748] (capella_avoiding_pedestrians) StdoutLine: {'line': b'RegularExpression::compile(): Error in compile.\n'}
+[4.070773] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Configured cppcheck include dirs: \n'}
+[4.070799] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[4.070824] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.070850] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.070874] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.070917] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.070950] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.070978] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.071003] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.071027] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.071051] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.071075] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.071098] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.071122] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.071145] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.071168] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.071191] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.071212] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.071259] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.071285] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.071313] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.071337] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.071364] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.071388] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.071412] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.071435] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.071458] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.071481] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.071512] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.071538] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.071561] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.071584] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.071607] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.071631] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.071654] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.071677] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.071701] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.071731] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.071755] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.071780] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.071805] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.071829] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.071852] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.071874] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.071896] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.071919] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.071941] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.071962] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.071984] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.072006] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.072030] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.072052] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.072074] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.072096] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.072119] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.072142] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.072166] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.072187] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.072209] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.072230] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.072252] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.072274] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.072296] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.072320] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.072342] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.072365] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.072388] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.072410] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.072433] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.072456] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.072477] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.072501] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.072523] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.072546] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.072569] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.072592] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.072614] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.072637] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.072675] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.072712] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.072738] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.072763] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.072790] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.072815] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.072840] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.072864] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.072888] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.072918] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.072945] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.072968] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.072991] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.073018] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073042] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.073065] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073089] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.073129] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.073157] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.073182] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.073207] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.073232] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.073256] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.073279] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.073303] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073330] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.073354] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073377] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.073400] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.073423] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.073446] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.073469] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.073493] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.073516] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.073540] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.073563] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073585] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.073606] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073629] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.073651] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.073673] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.073696] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.073718] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.073740] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.073762] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.073784] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.073806] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073829] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.073851] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.073873] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.073895] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.073917] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.073939] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.073962] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.073983] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.074006] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.074028] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.074050] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074073] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.074094] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074116] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.074139] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.074162] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.074185] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.074206] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.074228] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.074251] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.074277] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.074299] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074321] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.074351] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074375] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.074397] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.074419] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.074441] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.074463] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.074486] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.074508] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.074530] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.074553] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074576] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.074598] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074619] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.074642] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.074671] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.074696] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.074720] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:73 (string):\n'}
+[4.074744] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.074768] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^/home/linux/c++/src/capella_avoiding_pedestrians/.*".\n'}
+[4.074791] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.074814] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074836] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.074859] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.074888] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.074926] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.074954] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.074994] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.075031] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_cppcheck/cmake/ament_cmake_cppcheck_lint_hook.cmake:75 (string):\n'}
+[4.075058] (capella_avoiding_pedestrians) StderrLine: {'line': b'  string sub-command REGEX, mode MATCH failed to compile regex\n'}
+[4.075082] (capella_avoiding_pedestrians) StderrLine: {'line': b'  "^\\$<.*:/home/linux/c++/src/capella_avoiding_pedestrians/.*>$".\n'}
+[4.075107] (capella_avoiding_pedestrians) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[4.075131] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.075155] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_lint_auto/cmake/ament_lint_auto_package_hook.cmake:21 (ament_execute_extensions)\n'}
+[4.075180] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[4.075203] (capella_avoiding_pedestrians) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:66 (ament_execute_extensions)\n'}
+[4.075228] (capella_avoiding_pedestrians) StderrLine: {'line': b'  CMakeLists.txt:65 (ament_package)\n'}
+[4.075252] (capella_avoiding_pedestrians) StderrLine: {'line': b'\n'}
+[4.075275] (capella_avoiding_pedestrians) StderrLine: {'line': b'\x1b[0m\n'}
+[4.075300] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[4.075328] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[4.075419] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[4.075502] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[4.075583] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[4.075664] (capella_avoiding_pedestrians) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[4.075726] (capella_avoiding_pedestrians) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[4.075861] (capella_avoiding_pedestrians) StdoutLine: {'line': b'See also "/home/linux/c++/build/capella_avoiding_pedestrians/CMakeFiles/CMakeOutput.log".\n'}
+[4.076629] (capella_avoiding_pedestrians) CommandEnded: {'returncode': 1}
+[4.089813] (capella_avoiding_pedestrians) JobEnded: {'identifier': 'capella_avoiding_pedestrians', 'rc': 1}
+[4.100372] (-) EventReactorShutdown: {}

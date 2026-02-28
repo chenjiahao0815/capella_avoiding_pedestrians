@@ -83,6 +83,7 @@ private:
 		const geometry_msgs::msg::PoseArray::SharedPtr local_poses,
 		double threshold);
 
+	rclcpp::CallbackGroup::SharedPtr laser_callback_group_;
 	rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_camera_;
 	rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr sub_laser_;
 	rclcpp::Subscription<nav_msgs::msg::Path>::SharedPtr sub_global_plan_;
@@ -113,13 +114,14 @@ private:
 	size_t laser_queue_max_size_{30};
 
 	double person_conf_threshold_{0.1}; //行人检测置信度阈值
-	double camera_laser_offset_{0.0};  //默认的相机和激光雷达的角度差
 	double h_fov_rad_{1.0472};  //相机水平视场角，默认60度
 	double path_lookahead_distance_{5.0}; //保持多远的前方路径点用于判断
 	double avoid_hold_seconds_{3.0}; //避让行人的保持时间
 	bool has_recent_detection_{false}; //是否有最近的行人检测
 	bool last_published_avoiding_{false}; //上一次发布的避让状态
 	rclcpp::Time last_pedestrian_detect_time_; //最近一次行人检测时间
+	rclcpp::Time last_detection_update_time_; //detection_result_ 最后一次写入时间
+	double detection_stale_seconds_{1.0}; //检测结果过期阈值（秒）
 	//行人的id
 	uint64_t warning_event_id_{0};
 

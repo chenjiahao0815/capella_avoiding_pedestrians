@@ -86,6 +86,7 @@ public:
             }
 
             if (best_class < 0 || best_score < 0.05F) continue;
+            RCLCPP_DEBUG(logger_, "[YOLO] box[%d]: class=%d score=%.3f", i, best_class, best_score);
             // 解析边界框坐标
             const float cx = row[0] * x_scale;
             const float cy = row[1] * y_scale;
@@ -102,11 +103,19 @@ public:
             tracks.push_back(item);
         }
 
+        // 只在检测到行人时打印详细信息
+        const bool has_person = std::any_of(tracks.begin(), tracks.end(),
+            [](const TrackItem &t) { return t.class_id == 0; });
+        if (has_person) {
+            RCLCPP_INFO_THROTTLE(logger_, clock_, 500,
+                "[YOLO] person detected, total boxes=%zu", tracks.size());
+        }
         return tracks;
     }
 
 private:
     rclcpp::Logger logger_;
+    rclcpp::Clock clock_{RCL_SYSTEM_TIME};
     cv::dnn::Net net_;
     bool enabled_{false};
 };
@@ -118,9 +127,6 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     this->declare_parameter<double>("pedestrian_distance_threshold", 1.0); // 行人距离阈值
     this->declare_parameter<double>("robot_radius", 0.5); // 机器人半径
     this->declare_parameter<std::string>("global_frame", "map"); // 全局坐标系
-    // 仿真模式：跳过相机/YOLO，直接注入一个假行人（正前方2m，激光系）用于逻辑验证
-    this->declare_parameter<bool>("use_sim_detection", false);
-    this->declare_parameter<std::string>("sim_laser_frame", "front_laser"); // 仿真用激光frame
     //默认的模型的位置
     const std::string default_model_path =
         (std::filesystem::path(__FILE__).parent_path() / "car8.onnx").string();
@@ -128,6 +134,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     this->declare_parameter<std::string>("yolo_model_path", default_model_path);
     //默认的雷达和相机话题
     this->declare_parameter<std::string>("scan_topic_name_front", "/front_scan");
+    this->declare_parameter<std::string>("rgb_camera_frame", "front_camera_color_frame");
     std::string camera_topic = "/rgb_camera_front/image_raw";
 
     const std::string scan_topic = this->get_parameter("scan_topic_name_front").as_string();
@@ -141,6 +148,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
             yolo_model_path.c_str());
     }
     yolo_ = std::make_shared<OpenCvYoloTracker>(yolo_model_path, this->get_logger());
+    laser_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     //qos类型
     auto qos_transient_local = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();
     //警报话题
@@ -157,13 +165,16 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
             this->imageCallback(msg);
         }); //相机回调
 
+    auto laser_sub_options = rclcpp::SubscriptionOptions();
+    laser_sub_options.callback_group = laser_callback_group_;
     sub_laser_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
         scan_topic,
-        10,
+        rclcpp::SensorDataQoS(),
         [this](const sensor_msgs::msg::LaserScan::SharedPtr msg)
         {
             this->laserCallback(msg);
-        }); //激光回调
+        },
+        laser_sub_options); //激光回调（独立回调组）
 
     sub_global_plan_ = this->create_subscription<nav_msgs::msg::Path>(
         "teb_global_plan",
@@ -229,6 +240,16 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::Image::SharedP
     // YOLO检测人体框
     std::vector<TrackItem> tracks;
     if (!runYoloTrack(frame, tracks)) return;
+    // 只在有行人框时才打印
+    const bool frame_has_person = std::any_of(tracks.begin(), tracks.end(),
+        [this](const TrackItem &t) {
+            return t.class_id == 0 && t.confidence >= static_cast<float>(person_conf_threshold_);
+        });
+    if (frame_has_person) {
+        RCLCPP_INFO_THROTTLE(
+            this->get_logger(), *this->get_clock(), 500,
+            "[imageCallback] person box(es) found, total YOLO boxes=%zu", tracks.size());
+    }
 
     // 获取最新的激光雷达数据
     sensor_msgs::msg::LaserScan::SharedPtr latest_scan;
@@ -239,16 +260,57 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::Image::SharedP
         }
     }
 
-    // 更新相机到激光雷达的角度偏差（通过TF，硬件固定值，失败则沿用上次值）
-    if (latest_scan && !msg->header.frame_id.empty()) {
+    // 获取激光雷达到相机坐标系的完整TF变换（含平移+旋转）
+    const std::string rgb_camera_frame = this->get_parameter("rgb_camera_frame").as_string();
+    geometry_msgs::msg::TransformStamped tf_cam_laser;
+    bool have_tf = false;
+    if (latest_scan && !rgb_camera_frame.empty()) {
         try {
-            const auto tf_cam_laser = tf_buffer_->lookupTransform(
-                msg->header.frame_id,
+            tf_cam_laser = tf_buffer_->lookupTransform(
+                rgb_camera_frame,
                 latest_scan->header.frame_id,
                 tf2::TimePointZero,
                 tf2::durationFromSec(0.05));
-            camera_laser_offset_ = -tf2::getYaw(tf_cam_laser.transform.rotation);
-        } catch (const tf2::TransformException &) {}
+            have_tf = true;
+        } catch (const tf2::TransformException &e) {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
+                "[TF] lookupTransform failed: %s (cam='%s', laser='%s')",
+                e.what(), rgb_camera_frame.c_str(), latest_scan->header.frame_id.c_str());
+        }
+    }
+
+    // 将所有有效激光点批量变换到相机坐标系（仅用XY平面做角度匹配）
+    // 相机body坐标系约定：X前、Y左，与Python版一致
+    struct LaserCamPt { float xc; float yc; float r; float theta_l; };
+    std::vector<LaserCamPt> laser_cam_pts;
+    if (latest_scan && have_tf) {
+        const auto &q = tf_cam_laser.transform.rotation;
+        const auto &t = tf_cam_laser.transform.translation;
+        // 由四元数构造旋转矩阵（只需前两行用于XY平面）
+        const float qx = static_cast<float>(q.x);
+        const float qy = static_cast<float>(q.y);
+        const float qz = static_cast<float>(q.z);
+        const float qw = static_cast<float>(q.w);
+        const float R00 = 1.0F - 2.0F*(qy*qy + qz*qz);
+        const float R01 = 2.0F*(qx*qy - qz*qw);
+        const float R10 = 2.0F*(qx*qy + qz*qw);
+        const float R11 = 1.0F - 2.0F*(qx*qx + qz*qz);
+        const float tx = static_cast<float>(t.x);
+        const float ty = static_cast<float>(t.y);
+        const int n = static_cast<int>(latest_scan->ranges.size());
+        laser_cam_pts.reserve(n);
+        for (int i = 0; i < n; ++i) {
+            const float r = latest_scan->ranges[i];
+            if (!std::isfinite(r) || r < latest_scan->range_min || r > latest_scan->range_max) continue;
+            const float theta_l = latest_scan->angle_min + i * latest_scan->angle_increment;
+            const float xl = r * std::cos(theta_l);
+            const float yl = r * std::sin(theta_l);
+            const float xc = R00*xl + R01*yl + tx;
+            const float yc = R10*xl + R11*yl + ty;
+            laser_cam_pts.push_back({xc, yc, r, theta_l});
+        }
+        RCLCPP_DEBUG(this->get_logger(), "[TF] cam=%s laser=%s valid_pts=%zu",
+            rgb_camera_frame.c_str(), latest_scan->header.frame_id.c_str(), laser_cam_pts.size());
     }
 
     cv::Mat annotated = frame.clone();
@@ -264,70 +326,55 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::Image::SharedP
         if (det.class_id != 0) continue;
         if (det.confidence < static_cast<float>(person_conf_threshold_)) continue;
 
-        // 由框中心像素坐标计算水平方向角
-        const float cx = det.bbox.x + det.bbox.width * 0.5F;
-        const float norm = (cx / static_cast<float>(msg->width)) - 0.5f;
-        const float yaw = -norm * static_cast<float>(h_fov_rad_);
+        // 由检测框左右边界像素坐标计算相机水平角度范围
+        // 角度约定：图像中心为0，左正右负（与Python版一致）
+        const float img_w = static_cast<float>(msg->width);
+        const float theta1 = (0.5F - det.bbox.x / img_w) * static_cast<float>(h_fov_rad_);
+        const float theta2 = (0.5F - (det.bbox.x + det.bbox.width) / img_w) * static_cast<float>(h_fov_rad_);
+        const float theta_min = std::min(theta1, theta2);
+        const float theta_max = std::max(theta1, theta2);
 
-        // 将相机角度映射到激光雷达坐标系，查询该方向的测距值
+        // 在相机坐标系角度范围内搜索最近的激光点
         float distance = std::numeric_limits<float>::quiet_NaN();
-        if (latest_scan) {
-            const float laser_angle = yaw + static_cast<float>(camera_laser_offset_);
-            const int idx = static_cast<int>(
-                (laser_angle - latest_scan->angle_min) / latest_scan->angle_increment);
-            if (idx >= 0 && idx < static_cast<int>(latest_scan->ranges.size())) {
-                const float r = latest_scan->ranges[idx];
-                if (r > latest_scan->range_min && r < latest_scan->range_max) {
-                    distance = r;
+        float best_theta_l = 0.0F;  // 最近点在激光坐标系中的角度
+        float best_r = 0.0F;        // 最近点在激光坐标系中的距离
+        if (!laser_cam_pts.empty()) {
+            float min_dist2d = std::numeric_limits<float>::max();
+            for (const auto &lp : laser_cam_pts) {
+                const float pt_angle = std::atan2(lp.yc, lp.xc);
+                const float dist2d = std::hypot(lp.xc, lp.yc);
+                if (pt_angle >= theta_min && pt_angle <= theta_max && dist2d > 0.3F) {
+                    if (dist2d < min_dist2d) {
+                        min_dist2d = dist2d;
+                        distance = dist2d;
+                        best_theta_l = lp.theta_l;
+                        best_r = lp.r;
+                    }
                 }
             }
+        } else if (!latest_scan) {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
+                "[laser] no scan data available");
+        } else if (!have_tf) {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
+                "[laser] TF unavailable, cannot map laser to camera frame");
+        } else {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
+                "[laser] no valid laser pts in bbox angle range [%.3f, %.3f]rad conf=%.2f",
+                theta_min, theta_max, det.confidence);
         }
 
-        // 只有激光距离有效才认为检测到行人
         if (!std::isnan(distance)) {
-            const float laser_angle = yaw + static_cast<float>(camera_laser_offset_);
+            // 用激光坐标系原始极坐标还原笛卡尔位置，保持坐标系一致（timerCallback再转map）
             geometry_msgs::msg::Point p;
-            p.x = distance * std::cos(laser_angle);
-            p.y = distance * std::sin(laser_angle);
+            p.x = best_r * std::cos(best_theta_l);
+            p.y = best_r * std::sin(best_theta_l);
             p.z = 0.0;
             result.pedestrians_laser.push_back(p);
             result.detected = true;
-
-            // 打印 base_link 和 map 坐标日志
-            if (latest_scan) {
-                geometry_msgs::msg::PointStamped p_laser;
-                p_laser.header.frame_id = latest_scan->header.frame_id;
-                p_laser.header.stamp = msg->header.stamp;
-                p_laser.point = p;
-
-                std::ostringstream log_stream;
-                log_stream << std::fixed << std::setprecision(2);
-                log_stream << "[laser] (" << p.x << ", " << p.y << ")";
-
-                try {
-                    geometry_msgs::msg::PointStamped p_base;
-                    tf_buffer_->transform(p_laser, p_base, "base_link", tf2::durationFromSec(0.1));
-                    log_stream << "  [base_link] (" << p_base.point.x << ", " << p_base.point.y << ")";
-                } catch (const tf2::TransformException &e) {
-                    log_stream << "  [base_link] TF failed: " << e.what();
-                }
-
-                try {
-                    geometry_msgs::msg::PointStamped p_map;
-                    tf_buffer_->transform(p_laser, p_map, "map", tf2::durationFromSec(0.1));
-                    log_stream << "  [map] (" << p_map.point.x << ", " << p_map.point.y << ")";
-                } catch (const tf2::TransformException &e) {
-                    log_stream << "  [map] TF failed: " << e.what();
-                }
-
-                RCLCPP_INFO_THROTTLE(
-                    this->get_logger(),
-                    *this->get_clock(),
-                    500,
-                    "pedestrian %s  dist=%.1fm",
-                    log_stream.str().c_str(),
-                    distance);
-            }
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
+                "[laser] matched! dist=%.2fm bbox_angle=[%.3f,%.3f]rad conf=%.2f",
+                distance, theta_min, theta_max, det.confidence);
         }
 
         // 绘制标注框，显示置信度和距离
@@ -356,7 +403,12 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::Image::SharedP
             1);
     }
 
-    if (result.detected && pub_annotated_image_) {
+    // 只要有人被YOLO检测到（无论激光是否有效）都发布标注图像
+    const bool has_any_person = std::any_of(tracks.begin(), tracks.end(),
+        [this](const TrackItem &t) {
+            return t.class_id == 0 && t.confidence >= static_cast<float>(person_conf_threshold_);
+        });
+    if (has_any_person && pub_annotated_image_) {
         auto annotated_msg = sensor_msgs::msg::Image();
         annotated_msg.header = msg->header;
         annotated_msg.height = static_cast<uint32_t>(annotated.rows);
@@ -452,28 +504,6 @@ void BehaviorDetectionNode::timerCallback()
 {
     bool trigger_now = false;  // 默认没检测到人
 
-    // 仿真模式：直接注入假行人，绕过相机/YOLO
-    if (this->get_parameter("use_sim_detection").as_bool()) {
-        const std::string sim_frame = this->get_parameter("sim_laser_frame").as_string();
-        DetectionResult sim_det;
-        sim_det.detected = true;
-        sim_det.stamp = rclcpp::Time(0, 0, this->get_clock()->get_clock_type());  // 使用最新可用TF
-        sim_det.laser_frame_id = sim_frame;
-        // 假行人：激光坐标系正前方 2.0m
-        geometry_msgs::msg::Point sim_p;
-        sim_p.x = 2.0;
-        sim_p.y = 0.0;
-        sim_p.z = 0.0;
-        sim_det.pedestrians_laser.push_back(sim_p);
-        {
-            std::lock_guard<std::mutex> lock(detection_mutex_);
-            detection_result_ = sim_det;
-        }
-        RCLCPP_INFO_THROTTLE(
-            this->get_logger(), *this->get_clock(), 2000,
-            "[SIM] injected pedestrian at laser (2.0, 0.0)");
-    }
-
     if (last_global_plan_ || last_local_poses_) {
         DetectionResult det;
         {
@@ -495,11 +525,7 @@ void BehaviorDetectionNode::timerCallback()
                     geometry_msgs::msg::PointStamped p_map;
                     tf_buffer_->transform(p_in, p_map, "map", tf2::durationFromSec(0.2));
                     pedestrians_map.push_back(p_map);
-                } catch (const tf2::TransformException &e) {
-                    RCLCPP_WARN_THROTTLE(
-                        this->get_logger(), *this->get_clock(), 2000,
-                        "TF transform %s->map failed: %s", det.laser_frame_id.c_str(), e.what());
-                }
+                } catch (const tf2::TransformException &) {}
             }
 
             if (!pedestrians_map.empty()) {

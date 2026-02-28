@@ -18,7 +18,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     this->declare_parameter<std::string>("global_frame", "map");
     this->declare_parameter<std::string>("scan_topic_name_front", "/front_scan");
 
-    std::string camera_topic = "/camera1/color/image_raw";
+    std::string camera_topic = "/rgb_camera_front/image_raw"
     const std::string scan_topic = this->get_parameter("scan_topic_name_front").as_string();
 
     auto qos_transient_local = rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable();

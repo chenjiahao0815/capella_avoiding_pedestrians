@@ -1,6 +1,7 @@
 #pragma once
 
 #include <builtin_interfaces/msg/time.hpp>
+#include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/point_stamped.hpp>
 #include <geometry_msgs/msg/pose_array.hpp>
 #include <nav_msgs/msg/path.hpp>
@@ -11,6 +12,7 @@
 #include <std_msgs/msg/bool.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
+#include <visualization_msgs/msg/marker.hpp>
 #include <visualization_msgs/msg/marker_array.hpp>
 
 #include <deque>
@@ -30,7 +32,7 @@ struct TrackBBox
 
 struct TrackItem
 {
-	int class_id{0};
+	int class_id{0};  
 	float confidence{0.0F};
 	TrackBBox bbox;
 };
@@ -38,7 +40,7 @@ struct TrackItem
 class YoloTracker
 {
 public:
-	virtual ~YoloTracker() = default;
+	virtual ~YoloTracker() = default; 
 	virtual std::vector<TrackItem> track(const cv::Mat &frame) = 0;
 };
 
@@ -51,8 +53,8 @@ private:
 	{
 		bool detected{false};
 		builtin_interfaces::msg::Time stamp;
-		std::string frame_id;
-		std::vector<float> person_angles;
+		std::string laser_frame_id;  // 激光雷达坐标系
+		std::vector<geometry_msgs::msg::Point> pedestrians_laser;  // 行人在激光坐标系下的坐标
 	};
 
 	void imageCallback(const sensor_msgs::msg::Image::SharedPtr msg);
@@ -87,6 +89,10 @@ private:
 	rclcpp::Subscription<geometry_msgs::msg::PoseArray>::SharedPtr sub_local_poses_;
     // 是否在避让行人
 	rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pub_avoiding_;
+	//可视化的功能
+	rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_annotated_image_;
+	rclcpp::Publisher<geometry_msgs::msg::PoseArray>::SharedPtr pub_pedestrians_map_;
+	rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_pedestrians_markers_;
 
 	std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
 	std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
@@ -98,7 +104,7 @@ private:
 	nav_msgs::msg::Path::SharedPtr last_global_plan_; //最近全局路径
 	geometry_msgs::msg::PoseArray::SharedPtr last_local_poses_; //最近局部路径
 	nav_msgs::msg::Path downsampled_global_plan_; //降采样后的全局路径
-    //共享数据
+    //共享数据    
 	std::mutex detection_mutex_;
 	DetectionResult detection_result_;
     // 激光雷达
@@ -106,7 +112,7 @@ private:
 	std::deque<std::pair<double, sensor_msgs::msg::LaserScan::SharedPtr>> laser_queue_;
 	size_t laser_queue_max_size_{30};
 
-	double person_conf_threshold_{0.5}; //行人检测置信度阈值
+	double person_conf_threshold_{0.1}; //行人检测置信度阈值
 	double camera_laser_offset_{0.0};  //默认的相机和激光雷达的角度差
 	double h_fov_rad_{1.0472};  //相机水平视场角，默认60度
 	double path_lookahead_distance_{5.0}; //保持多远的前方路径点用于判断
@@ -114,6 +120,8 @@ private:
 	bool has_recent_detection_{false}; //是否有最近的行人检测
 	bool last_published_avoiding_{false}; //上一次发布的避让状态
 	rclcpp::Time last_pedestrian_detect_time_; //最近一次行人检测时间
+	//行人的id
+	uint64_t warning_event_id_{0};
 
 	std::shared_ptr<YoloTracker> yolo_;
 };

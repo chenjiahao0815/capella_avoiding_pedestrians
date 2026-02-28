@@ -1,2 +1,1 @@
-source;share/capella_avoiding_pedestrians/environment/ament_prefix_path.sh
-source;share/capella_avoiding_pedestrians/environment/path.sh
+/home/linux/c++/build/capella_avoiding_pedestrians/ament_cmake_environment_hooks/local_setup.dsv

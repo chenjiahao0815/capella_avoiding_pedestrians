@@ -1,1 +1,0 @@
-/home/linux/c++/build/capella_avoiding_pedestrians/ament_cmake_environment_hooks/local_setup.sh

@@ -3,3 +3,7 @@ install/
 log/
 *.o
 *.exe
+*.onnx
+*.pt
+*.yaml
+*.db3

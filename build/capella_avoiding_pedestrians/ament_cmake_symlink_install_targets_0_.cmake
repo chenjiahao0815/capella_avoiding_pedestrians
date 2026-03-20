@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/linux/c++/build/capella_avoiding_pedestrians/behavior_detection_node" "TARGETS" "behavior_detection_node" "DESTINATION" "lib/capella_avoiding_pedestrians")

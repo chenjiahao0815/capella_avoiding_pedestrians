@@ -1,1 +1,0 @@
-/home/linux/c++/src/capella_avoiding_pedestrians/include/capella_avoiding_pedestrians/avoiding_pedestrians.hpp

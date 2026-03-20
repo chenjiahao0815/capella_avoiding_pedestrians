@@ -22,7 +22,6 @@ namespace
 class OpenCvYoloTracker : public YoloTracker
 {
 public:
-    // 加载YOLO模型
     OpenCvYoloTracker(const std::string &model_path, const rclcpp::Logger &logger)
         : logger_(logger)
     {
@@ -36,7 +35,7 @@ public:
             yolo_enabled_ = true;
             RCLCPP_INFO(logger_, "YOLO model loaded: %s", model_path.c_str());
 
-            // 强制使用 CPU 后端（CUDA 后端对 YOLOv8 ONNX 输出 NaN）
+            // 写死 CPU，CUDA 后端对 YOLOv8 有 NaN bug
             net_.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
             net_.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
             RCLCPP_INFO(logger_, "[YOLO] CPU backend enabled");
@@ -46,47 +45,53 @@ public:
             yolo_enabled_ = false;
         }
     }
-    // 运行YOLO跟踪
+
     std::vector<TrackItem> track(const cv::Mat &frame) override
-    {   
-        //储存结果的向量
+    {
         std::vector<TrackItem> tracks;
         if (!yolo_enabled_ || frame.empty()) return tracks;
-        // 这里是要手动缩放一下输入图像到640x640，保持宽高比，并且进行归一化
+
         constexpr int input_size = 640;
-        cv::Mat blob; // 一个OpenCV DNN 的输入 blob[batch, channels, height, width]
-        cv::dnn::blobFromImage(frame, blob, 1.0 / 255.0, cv::Size(input_size, input_size), cv::Scalar(), true, false);
-        net_.setInput(blob); // 把frame转成blob输入到网络中去
+        cv::Mat blob;
+        cv::dnn::blobFromImage(frame, blob, 1.0 / 255.0,
+                               cv::Size(input_size, input_size),
+                               cv::Scalar(), true, false);
+        net_.setInput(blob);
 
-        std::vector<cv::Mat> outputs;  // 网络输出层用mat
+        std::vector<cv::Mat> outputs;
         net_.forward(outputs, net_.getUnconnectedOutLayersNames());
-
         if (outputs.empty()) return tracks;
 
         const cv::Mat &out = outputs[0];
         if (out.dims != 3) return tracks;
 
+        // YOLOv8 输出 [1, 84, 8400] → 转置为 [8400, 84]
         cv::Mat det;
-        if (out.size[1] < out.size[2]) { //矩阵转置
-            cv::Mat raw(out.size[1], out.size[2], CV_32F, const_cast<float *>(out.ptr<float>()));
+        if (out.size[1] < out.size[2]) {
+            cv::Mat raw(out.size[1], out.size[2], CV_32F,
+                        const_cast<float *>(out.ptr<float>()));
             cv::transpose(raw, det);
         } else {
-            det = cv::Mat(out.size[1], out.size[2], CV_32F, const_cast<float *>(out.ptr<float>())).clone();
+            det = cv::Mat(out.size[1], out.size[2], CV_32F,
+                          const_cast<float *>(out.ptr<float>())).clone();
         }
 
         const int class_count = det.cols - 4;
+        if (class_count <= 0) return tracks;
 
-        // 计算缩放因子
         const float x_scale = static_cast<float>(frame.cols) / static_cast<float>(input_size);
         const float y_scale = static_cast<float>(frame.rows) / static_cast<float>(input_size);
 
-        for (int i = 0; i < det.rows; ++i) { // 每一个检测框
+        // ========== 改动2: 收集候选框，最后统一做 NMS ==========
+        std::vector<cv::Rect> boxes;
+        std::vector<float>    confidences;
+        std::vector<int>      class_ids;
+
+        for (int i = 0; i < det.rows; ++i) {
             const float *row = det.ptr<float>(i);
             if (!row) continue;
-            // 对检测框取做高得分的类别，第0-3列是bbox坐标，后面是类别得分
-            // 注意: class_count 已在上方诊断点3处定义
-            if (class_count <= 0) continue;
 
+            // 找最高分类别
             int best_class = -1;
             float best_score = 0.0F;
             for (int c = 0; c < class_count; ++c) {
@@ -97,31 +102,43 @@ public:
                 }
             }
 
-            if (best_class != 0 || best_score < 0.05F) continue;
-            RCLCPP_DEBUG(logger_, "[YOLO] box[%d]: person score=%.3f", i, best_score);
-            // 解析边界框坐标
+            // 只保留 person (class 0)，低阈值先过滤
+            if (best_class != 0 || best_score < 0.25F) continue;
+
             const float cx = row[0] * x_scale;
             const float cy = row[1] * y_scale;
-            const float w = row[2] * x_scale;
-            const float h = row[3] * y_scale;
+            const float w  = row[2] * x_scale;
+            const float h  = row[3] * y_scale;
 
+            const int x1 = static_cast<int>(cx - 0.5F * w);
+            const int y1 = static_cast<int>(cy - 0.5F * h);
+            const int bw = static_cast<int>(w);
+            const int bh = static_cast<int>(h);
+
+            boxes.emplace_back(x1, y1, bw, bh);
+            confidences.push_back(best_score);
+            class_ids.push_back(best_class);
+        }
+
+        // NMS 去除重叠框
+        std::vector<int> indices;
+        if (!boxes.empty()) {
+            cv::dnn::NMSBoxes(boxes, confidences, 0.25F, 0.45F, indices);
+        }
+
+        // 只保留 NMS 后的结果
+        tracks.reserve(indices.size());
+        for (int idx : indices) {
             TrackItem item;
-            item.class_id = best_class;
-            item.confidence = best_score;
-            item.bbox.x = cx - 0.5F * w;
-            item.bbox.y = cy - 0.5F * h;
-            item.bbox.width = w;
-            item.bbox.height = h;
+            item.class_id   = class_ids[idx];
+            item.confidence = confidences[idx];
+            item.bbox.x      = static_cast<float>(boxes[idx].x);
+            item.bbox.y      = static_cast<float>(boxes[idx].y);
+            item.bbox.width   = static_cast<float>(boxes[idx].width);
+            item.bbox.height  = static_cast<float>(boxes[idx].height);
             tracks.push_back(item);
         }
 
-        // 只在检测到行人时打印详细信息
-        // const bool has_person = std::any_of(tracks.begin(), tracks.end(),
-        //     [](const TrackItem &t) { return t.class_id == 0; });
-        // if (has_person) {
-        //     RCLCPP_INFO_THROTTLE(logger_, clock_, 500,
-        //         "[YOLO] person detected, total boxes=%zu", tracks.size());
-        // }
         return tracks;
     }
 

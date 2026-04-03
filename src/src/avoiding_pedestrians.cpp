@@ -154,7 +154,7 @@ public:
             }
 
             // 只保 person
-            if (best_class != 0 || best_score < 0.25F) continue;
+            if (best_class != 0 || best_score < 0.15F) continue;
 
             const float cx = row[0] * x_scale;
             const float cy = row[1] * y_scale;
@@ -174,7 +174,7 @@ public:
         // NMS 去除重叠 
         std::vector<int> indices;
         if (!boxes.empty()) {
-            cv::dnn::NMSBoxes(boxes, confidences, 0.25F, 0.45F, indices);
+            cv::dnn::NMSBoxes(boxes, confidences, 0.15F, 0.65F, indices);
         }
 
         // 只保 NMS 后的结果

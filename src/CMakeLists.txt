@@ -59,7 +59,7 @@ install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
-install(FILES src/car8.onnx
+install(FILES src/avoid_person.onnx
   DESTINATION share/${PROJECT_NAME}
 )
 

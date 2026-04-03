@@ -213,7 +213,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     person_conf_threshold_ = this->get_parameter("person_conf_threshold").as_double();
     //默认的模型的位置
     const std::string default_model_path =
-        (std::filesystem::path(__FILE__).parent_path() / "car8.onnx").string();
+        (std::filesystem::path(__FILE__).parent_path() / "avoid_person.onnx").string();
 
     this->declare_parameter<std::string>("yolo_model_path", default_model_path);
     this->declare_parameter<bool>("is_use_cuda", false);  // 默认使用 CPU

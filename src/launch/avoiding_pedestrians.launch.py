@@ -9,7 +9,7 @@ def generate_launch_description():
     pkg_share = get_package_share_directory("capella_avoiding_pedestrians")
 
     # YOLO 模型路径
-    yolo_model_path = os.path.join(pkg_share, "car8.onnx")
+    yolo_model_path = os.path.join(pkg_share, "avoid_person.onnx")
 
     return LaunchDescription([
         Node(

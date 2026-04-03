@@ -22,7 +22,7 @@ namespace
 class OpenCvYoloTracker : public YoloTracker
 {
 public:
-    OpenCvYoloTracker(const std::string &model_path, const rclcpp::Logger &logger)
+    OpenCvYoloTracker(const std::string &model_path, const rclcpp::Logger &logger, bool use_cuda)
         : logger_(logger)
     {
         try {
@@ -35,11 +35,18 @@ public:
             yolo_enabled_ = true;
             RCLCPP_INFO(logger_, "YOLO model loaded: %s", model_path.c_str());
 
-            // 写死 CPU，CUDA 后端对 YOLOv8 有 NaN bug
-            net_.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
-            net_.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
-            net_.enableWinograd(false);  // 修复 CUDA 后端 NaN bug
-            RCLCPP_INFO(logger_, "[YOLO] CPU backend enabled");
+            if (use_cuda) {
+                // CUDA 后端
+                net_.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
+                net_.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
+                net_.enableWinograd(false);  // 修复 CUDA 后端 NaN bug
+                RCLCPP_INFO(logger_, "[YOLO] CUDA backend enabled");
+            } else {
+                // CPU 后端
+                net_.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
+                net_.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+                RCLCPP_INFO(logger_, "[YOLO] CPU backend enabled");
+            }
 
         } catch (const std::exception &e) {
             RCLCPP_ERROR(logger_, "Exception while loading YOLO model: %s", e.what());
@@ -64,9 +71,52 @@ public:
         if (outputs.empty()) return tracks;
 
         const cv::Mat &out = outputs[0];
+        
+        // 第一次推理：打印原始输出健康状态
+        static bool first_inference_logged = false;
+        if (!first_inference_logged) {
+            RCLCPP_INFO(logger_, "[YOLO] First inference raw output:");
+            RCLCPP_INFO(logger_, "[YOLO]   outputs.size() = %zu", outputs.size());
+            RCLCPP_INFO(logger_, "[YOLO]   out.dims = %d", out.dims);
+            if (out.dims >= 3) {
+                RCLCPP_INFO(logger_, "[YOLO]   out.shape = [%d, %d, %d]", 
+                    out.size[0], out.size[1], out.size[2]);
+            }
+            
+            // 统计非零值、min/max/mean
+            float min_val = std::numeric_limits<float>::max();
+            float max_val = std::numeric_limits<float>::lowest();
+            double sum = 0.0;
+            int non_zero = 0;
+            int total = out.total();
+            const float* ptr = out.ptr<float>();
+            for (int i = 0; i < total; ++i) {
+                float v = ptr[i];
+                if (v != 0.0f) ++non_zero;
+                if (v < min_val) min_val = v;
+                if (v > max_val) max_val = v;
+                sum += v;
+            }
+            float mean_val = total > 0 ? static_cast<float>(sum / total) : 0.0f;
+            
+            RCLCPP_INFO(logger_, "[YOLO]   total elements = %d", total);
+            RCLCPP_INFO(logger_, "[YOLO]   non-zero elements = %d (%.2f%%)", 
+                non_zero, 100.0f * non_zero / std::max(total, 1));
+            RCLCPP_INFO(logger_, "[YOLO]   min = %.4f, max = %.4f, mean = %.4f", 
+                min_val, max_val, mean_val);
+            
+            // 打印前几个值作为样本
+            if (total >= 10) {
+                RCLCPP_INFO(logger_, "[YOLO]   sample values[0..9]: %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f",
+                    ptr[0], ptr[1], ptr[2], ptr[3], ptr[4], 
+                    ptr[5], ptr[6], ptr[7], ptr[8], ptr[9]);
+            }
+            first_inference_logged = true;
+        }
+
         if (out.dims != 3) return tracks;
 
-        // YOLOv8 输出 [1, 84, 8400] → 转置为 [8400, 84]
+        // YOLOv8 输出 [1, 84, 8400]  转置 [8400, 84]
         cv::Mat det;
         if (out.size[1] < out.size[2]) {
             cv::Mat raw(out.size[1], out.size[2], CV_32F,
@@ -83,7 +133,7 @@ public:
         const float x_scale = static_cast<float>(frame.cols) / static_cast<float>(input_size);
         const float y_scale = static_cast<float>(frame.rows) / static_cast<float>(input_size);
 
-        //  收集候选框，最后统一做 NMS 
+        //  收集候选框，最后统一 NMS 
         std::vector<cv::Rect> boxes;
         std::vector<float>    confidences;
         std::vector<int>      class_ids;
@@ -103,7 +153,7 @@ public:
                 }
             }
 
-            // 只保留 person
+            // 只保 person
             if (best_class != 0 || best_score < 0.25F) continue;
 
             const float cx = row[0] * x_scale;
@@ -121,13 +171,13 @@ public:
             class_ids.push_back(best_class);
         }
 
-        // NMS 去除重叠框
+        // NMS 去除重叠 
         std::vector<int> indices;
         if (!boxes.empty()) {
             cv::dnn::NMSBoxes(boxes, confidences, 0.25F, 0.45F, indices);
         }
 
-        // 只保留 NMS 后的结果
+        // 只保 NMS 后的结果
         tracks.reserve(indices.size());
         for (int idx : indices) {
             TrackItem item;
@@ -154,10 +204,10 @@ private:
 BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
 {
     this->declare_parameter<double>("global_search_distance", 5.0);  // 全局路径搜索距离
-    this->declare_parameter<double>("pedestrian_distance_threshold", 1.0); // 行人距离阈值
-    this->declare_parameter<double>("local_search_distance", 5.0);  // 局部路径搜索距离
-    this->declare_parameter<double>("avoid_hold_seconds", 3.0); // 避让行人的保持时间
-    this->declare_parameter<double>("person_conf_threshold", 0.6); // 行人检测置信度阈值
+    this->declare_parameter<double>("pedestrian_distance_threshold", 1.0); // 行人距离阈 
+    this->declare_parameter<double>("local_search_distance", 5.0);  // 局部路径搜索距 
+    this->declare_parameter<double>("avoid_hold_seconds", 3.0); // 避让行人的保持时 
+    this->declare_parameter<double>("person_conf_threshold", 0.6); // 行人检测置信度阈 
     local_search_distance_ = this->get_parameter("local_search_distance").as_double();
     avoid_hold_seconds_ = this->get_parameter("avoid_hold_seconds").as_double();
     person_conf_threshold_ = this->get_parameter("person_conf_threshold").as_double();
@@ -166,6 +216,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
         (std::filesystem::path(__FILE__).parent_path() / "car8.onnx").string();
 
     this->declare_parameter<std::string>("yolo_model_path", default_model_path);
+    this->declare_parameter<bool>("is_use_cuda", false);  // 默认使用 CPU
     //默认的雷达和相机话题
     this->declare_parameter<std::string>("scan_topic_name_front", "/front_scan");
     this->declare_parameter<std::string>("camera_topic", "/rgb_camera_front/compressed");
@@ -175,6 +226,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     const std::string camera_topic = this->get_parameter("camera_topic").as_string();
     // ros2 run ...pkg ...node --ros-args -p yolo_model_path:=/...model.pt
     const std::string yolo_model_path = this->get_parameter("yolo_model_path").as_string();
+    const bool use_cuda = this->get_parameter("is_use_cuda").as_bool();
     //暂时是用的onnx，不用pt
     if (std::filesystem::path(yolo_model_path).extension() == ".pt") {
         RCLCPP_WARN(
@@ -182,7 +234,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
             "Configured YOLO model is .pt (%s). Current C++ tracker uses OpenCV DNN and expects ONNX; please convert .pt to .onnx.",
             yolo_model_path.c_str());
     }
-    yolo_ = std::make_shared<OpenCvYoloTracker>(yolo_model_path, this->get_logger());
+    yolo_ = std::make_shared<OpenCvYoloTracker>(yolo_model_path, this->get_logger(), use_cuda);
     laser_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     global_plan_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     local_poses_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
@@ -211,7 +263,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
         {
             this->laserCallback(msg);
         },
-        laser_sub_options); //激光回调
+        laser_sub_options); //激光回 
 
     auto global_plan_sub_options = rclcpp::SubscriptionOptions();
     global_plan_sub_options.callback_group = global_plan_callback_group_;
@@ -228,13 +280,13 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     local_poses_sub_options.callback_group = local_poses_callback_group_;
     sub_local_poses_ = this->create_subscription<geometry_msgs::msg::PoseArray>(
         "teb_poses",
-        //rclcpp::SensorDataQoS(),   // 如果有订阅但是不触发回调就改成这个
+        //rclcpp::SensorDataQoS(),   // 如果有订阅但是不触发回调就改成这 
         10,
         [this](const geometry_msgs::msg::PoseArray::SharedPtr msg)
         {
             this->localPosesCallback(msg);
         },
-        local_poses_sub_options);   //局部回调
+        local_poses_sub_options);   //局部回 
 
     tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
     tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
@@ -255,7 +307,7 @@ cv::Mat BehaviorDetectionNode::decodeCompressedImage(
     rclcpp::Time &out_stamp)
 {
     out_stamp = msg->header.stamp;
-    // 将 msg->data (std::vector<uint8_t>) 转为 cv::Mat 后解码
+    //  msg->data (std::vector<uint8_t>) 转为 cv::Mat 后解 
     cv::Mat img = cv::imdecode(cv::Mat(msg->data), cv::IMREAD_COLOR);
     if (img.empty()) {
         RCLCPP_WARN_THROTTLE(
@@ -276,7 +328,7 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
     }
     if (!msg) return;
     if (msg->data.empty()) return;
-    // 跳帧：每5帧推理一次
+    // 跳帧：每5帧推理一 
     static int frame_skip_counter = 0;
     if (++frame_skip_counter % 5 != 0) return;
 
@@ -295,28 +347,41 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
     // YOLO检测人体框
     std::vector<TrackItem> tracks;
     if (!runYoloTrack(frame, tracks)) return;
-    // 只在框数量变化（0->非0 或 非0->0）时打印日志
-    const bool current_has_boxes = !tracks.empty();
-    if (current_has_boxes != last_yolo_has_boxes_) {
-        if (current_has_boxes) {
-            RCLCPP_INFO(this->get_logger(), "YOLO detected %zu boxes", tracks.size());
-        } else {
-            RCLCPP_INFO(this->get_logger(), "YOLO no detection (0 boxes)");
+
+    // 统计当前帧里满足置信度阈值的" 的数 
+    int person_count = 0;
+    for (const auto &t : tracks) {
+        if (t.class_id == 0 &&
+            t.confidence >= static_cast<float>(person_conf_threshold_)) {
+            ++person_count;
         }
-        last_yolo_has_boxes_ = current_has_boxes;
-    }
-    // 只在有行人框时才打印
-    const bool frame_has_person = std::any_of(tracks.begin(), tracks.end(),
-        [this](const TrackItem &t) {
-            return t.class_id == 0 && t.confidence >= static_cast<float>(person_conf_threshold_);
-        });
-    if (frame_has_person) {
-        RCLCPP_INFO_THROTTLE(
-            this->get_logger(), *this->get_clock(), 500,
-            "[imageCallback] person box(es) found, total YOLO boxes=%zu", tracks.size());
     }
 
-    // 获取最新的激光雷达数据
+    // 1) 模型开始检测但还没看到人，只打印一 
+    if (person_count == 0 && !waiting_detect_log_printed_ && 
+        !first_pedestrian_detected_logged_) {
+        RCLCPP_INFO(this->get_logger(), "Waiting to detect pedestrians");
+        waiting_detect_log_printed_ = true;
+    }
+
+    // 2) 第一次检测到人，只打印一 
+    if (person_count > 0 && !first_pedestrian_detected_logged_) {
+        RCLCPP_INFO(this->get_logger(), "Pedestrian detected for the first time");
+        first_pedestrian_detected_logged_ = true;
+    }
+
+    // 3) 人数变化时打印一次（只在人数>0时打印，但0也要更新记录）
+    if (person_count != last_logged_person_count_) {
+        if (person_count > 0) {
+            RCLCPP_WARN(
+                this->get_logger(),
+                "%d people have been detected, so approach",
+                person_count);
+        }
+        last_logged_person_count_ = person_count;
+    }
+
+    // 获取最新的激光雷达数 
     sensor_msgs::msg::LaserScan::SharedPtr latest_scan;
     {
         std::lock_guard<std::mutex> lock(laser_queue_mutex_);
@@ -345,13 +410,13 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
     }
 
     // 将所有有效激光点批量变换到相机坐标系
-    // 相机body坐标系约定：X前、Y左
+    // 相机body坐标系约定：X前、Y 
     struct LaserCamPt { float xc; float yc; float r; float theta_l; };
     std::vector<LaserCamPt> laser_cam_pts;
     if (latest_scan && have_tf) {
         const auto &q = tf_cam_laser.transform.rotation;
         const auto &t = tf_cam_laser.transform.translation;
-        // 由四元数构造旋转矩阵
+        // 由四元数构造旋转矩 
         const float qx = static_cast<float>(q.x);
         const float qy = static_cast<float>(q.y);
         const float qz = static_cast<float>(q.z);
@@ -379,7 +444,7 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
     }
 
     cv::Mat annotated = frame.clone();
-    DetectionResult result;   // imageCallback的检测结果，包含行人坐标和激光信息
+    DetectionResult result;   // imageCallback的检测结果，包含行人坐标和激光信 
     result.detected = false;
     result.stamp = msg->header.stamp;
     if (latest_scan) {
@@ -392,7 +457,7 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
         if (det.confidence < static_cast<float>(person_conf_threshold_)) continue;
 
         // 由检测框左右边界像素坐标计算相机水平角度范围
-        // 角度约定：图像中心为0，左正右负
+        // 角度约定：图像中心为0，左正右 
         const float img_w = static_cast<float>(frame.cols);
         const float theta1 = (0.5F - det.bbox.x / img_w) * static_cast<float>(h_fov_rad_);
         const float theta2 = (0.5F - (det.bbox.x + det.bbox.width) / img_w) * static_cast<float>(h_fov_rad_);
@@ -430,7 +495,7 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
         }
 
         if (!std::isnan(distance)) {
-            // 用激光坐标系原始极坐标还原笛卡尔位置，保持坐标系一致
+            // 用激光坐标系原始极坐标还原笛卡尔位置，保持坐标系一 
             geometry_msgs::msg::Point p;
             p.x = best_r * std::cos(best_theta_l);
             p.y = best_r * std::sin(best_theta_l);
@@ -468,7 +533,7 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
             1);
     }
 
-    // 只要有人被YOLO检测到都发布标注图像
+    // 只要有人被YOLO检测到都发布标注图 
     const bool has_any_person = std::any_of(tracks.begin(), tracks.end(),
         [this](const TrackItem &t) {
             return t.class_id == 0 && t.confidence >= static_cast<float>(person_conf_threshold_);
@@ -504,7 +569,7 @@ bool BehaviorDetectionNode::runYoloTrack(const cv::Mat &frame, std::vector<Track
     }
 
     try {
-        tracks = yolo_->track(frame); // 运行YOLO跟踪的
+        tracks = yolo_->track(frame); // 运行YOLO跟踪 
         return true;
     } catch (const std::exception &e) {
         RCLCPP_WARN_THROTTLE(
@@ -567,7 +632,7 @@ void BehaviorDetectionNode::localPosesCallback(const geometry_msgs::msg::PoseArr
 
 void BehaviorDetectionNode::timerCallback()
 {
-    bool trigger_now = false;  // 默认没检测到人
+    bool trigger_now = false;  // 默认没检测到 
 
     if (last_global_plan_ || last_local_poses_) {
         DetectionResult det;
@@ -578,14 +643,14 @@ void BehaviorDetectionNode::timerCallback()
         // imageCallback中已完成激光测距，直接使用激光坐标系下的行人坐标
         if (det.detected && !det.pedestrians_laser.empty() && !det.laser_frame_id.empty()) {
 
-            // 将行人从激光坐标系转换到map坐标系
+            // 将行人从激光坐标系转换到map坐标 
             // 使用 rclcpp::Time(0) 查询最新可用变换，避免相机/激光时间戳不一致导致TF失败
             std::vector<geometry_msgs::msg::PointStamped> pedestrians_map;
             pedestrians_map.reserve(det.pedestrians_laser.size());
             for (const auto &pt_laser : det.pedestrians_laser) {
                 geometry_msgs::msg::PointStamped p_in;
                 p_in.header.frame_id = det.laser_frame_id;
-                p_in.header.stamp = rclcpp::Time(0, 0, RCL_ROS_TIME);  // 使用最新可用变换
+                p_in.header.stamp = rclcpp::Time(0, 0, RCL_ROS_TIME);  // 使用最新可用变 
                 p_in.point = pt_laser;
                 try {
                     geometry_msgs::msg::PointStamped p_map;
@@ -602,7 +667,7 @@ void BehaviorDetectionNode::timerCallback()
                 det.pedestrians_laser.size(), pedestrians_map.size());
 
             if (!pedestrians_map.empty()) {
-                // 发布可视化
+                // 发布可视 
                 geometry_msgs::msg::PoseArray poses_msg;
                 poses_msg.header.frame_id = "map";
                 poses_msg.header.stamp = this->now();
@@ -649,7 +714,7 @@ void BehaviorDetectionNode::timerCallback()
                 if (pub_pedestrians_map_) pub_pedestrians_map_->publish(poses_msg);
                 if (pub_pedestrians_markers_) pub_pedestrians_markers_->publish(marker_array);
 
-                // 检查行人是否在规划路径上
+                // 检查行人是否在规划路径 
                 const double search_distance = this->get_parameter("global_search_distance").as_double();
                 const double threshold = this->get_parameter("pedestrian_distance_threshold").as_double();
 

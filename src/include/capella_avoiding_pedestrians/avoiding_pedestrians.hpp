@@ -129,4 +129,10 @@ private:
 	uint64_t warning_event_id_{0};
 
 	std::shared_ptr<YoloTracker> yolo_;
+
+	cv::Mat decodeCompressedImage(
+		const sensor_msgs::msg::CompressedImage::SharedPtr &msg,
+		rclcpp::Time &out_stamp);
+
+	bool last_yolo_has_boxes_{false};
 };

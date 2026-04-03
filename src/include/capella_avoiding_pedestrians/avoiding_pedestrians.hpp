@@ -134,5 +134,7 @@ private:
 		const sensor_msgs::msg::CompressedImage::SharedPtr &msg,
 		rclcpp::Time &out_stamp);
 
-	bool last_yolo_has_boxes_{false};
+	bool waiting_detect_log_printed_{false};
+	bool first_pedestrian_detected_logged_{false};
+	int last_logged_person_count_{-1};
 };

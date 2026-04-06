@@ -22,9 +22,10 @@ namespace
 class OpenCvYoloTracker : public YoloTracker
 {
 public:
-    OpenCvYoloTracker(const std::string &model_path, const rclcpp::Logger &logger, bool use_cuda)
+    OpenCvYoloTracker(const std::string &model_path, const rclcpp::Logger &logger)
         : logger_(logger)
     {
+        
         try {
             net_ = cv::dnn::readNet(model_path);
             if (net_.empty()) {
@@ -35,14 +36,32 @@ public:
             yolo_enabled_ = true;
             RCLCPP_INFO(logger_, "YOLO model loaded: %s", model_path.c_str());
 
-            if (use_cuda) {
-                // CUDA 后端
+            // 先尝试 GPU (CUDA)
+            bool gpu_available = false;
+            try {
                 net_.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
                 net_.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
                 net_.enableWinograd(false);  // 修复 CUDA 后端 NaN bug
-                RCLCPP_INFO(logger_, "[YOLO] CUDA backend enabled");
+                
+                // 测试推理验证 GPU 是否可用
+                cv::Mat test_blob = cv::dnn::blobFromImage(cv::Mat::zeros(640, 640, CV_8UC3), 
+                                                           1.0/255.0, cv::Size(640, 640), 
+                                                           cv::Scalar(), true, false);
+                net_.setInput(test_blob);
+                std::vector<cv::Mat> test_outputs;
+                net_.forward(test_outputs);
+                
+                if (!test_outputs.empty()) {
+                    gpu_available = true;
+                }
+            } catch (...) {
+                gpu_available = false;
+            }
+
+            if (gpu_available) {
+                RCLCPP_INFO(logger_, "[YOLO] GPU backend enabled");
             } else {
-                // CPU 后端
+                // 回退到 CPU
                 net_.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
                 net_.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
                 RCLCPP_INFO(logger_, "[YOLO] CPU backend enabled");
@@ -207,7 +226,8 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     this->declare_parameter<double>("pedestrian_distance_threshold", 1.0); // 行人距离阈 
     this->declare_parameter<double>("local_search_distance", 5.0);  // 局部路径搜索距 
     this->declare_parameter<double>("avoid_hold_seconds", 3.0); // 避让行人的保持时 
-    this->declare_parameter<double>("person_conf_threshold", 0.6); // 行人检测置信度阈 
+    this->declare_parameter<double>("person_conf_threshold", 0.6); // 行人检测置信度阈
+    this->declare_parameter<int>("yolo_frame_skip", 1); // YOLO跳帧数，1表示不跳帧 
     local_search_distance_ = this->get_parameter("local_search_distance").as_double();
     avoid_hold_seconds_ = this->get_parameter("avoid_hold_seconds").as_double();
     person_conf_threshold_ = this->get_parameter("person_conf_threshold").as_double();
@@ -216,7 +236,6 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
         (std::filesystem::path(__FILE__).parent_path() / "avoid_person.onnx").string();
 
     this->declare_parameter<std::string>("yolo_model_path", default_model_path);
-    this->declare_parameter<bool>("is_use_cuda", false);  // 默认使用 CPU
     //默认的雷达和相机话题
     this->declare_parameter<std::string>("scan_topic_name_front", "/front_scan");
     this->declare_parameter<std::string>("camera_topic", "/rgb_camera_front/compressed");
@@ -226,7 +245,6 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     const std::string camera_topic = this->get_parameter("camera_topic").as_string();
     // ros2 run ...pkg ...node --ros-args -p yolo_model_path:=/...model.pt
     const std::string yolo_model_path = this->get_parameter("yolo_model_path").as_string();
-    const bool use_cuda = this->get_parameter("is_use_cuda").as_bool();
     //暂时是用的onnx，不用pt
     if (std::filesystem::path(yolo_model_path).extension() == ".pt") {
         RCLCPP_WARN(
@@ -234,7 +252,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
             "Configured YOLO model is .pt (%s). Current C++ tracker uses OpenCV DNN and expects ONNX; please convert .pt to .onnx.",
             yolo_model_path.c_str());
     }
-    yolo_ = std::make_shared<OpenCvYoloTracker>(yolo_model_path, this->get_logger(), use_cuda);
+    yolo_ = std::make_shared<OpenCvYoloTracker>(yolo_model_path, this->get_logger());
     laser_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     global_plan_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     local_poses_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
@@ -328,9 +346,10 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
     }
     if (!msg) return;
     if (msg->data.empty()) return;
-    // 跳帧：每5帧推理一 
+    // 跳帧控制
+    const int frame_skip = this->get_parameter("yolo_frame_skip").as_int();
     static int frame_skip_counter = 0;
-    if (++frame_skip_counter % 5 != 0) return;
+    if (frame_skip > 1 && ++frame_skip_counter % frame_skip != 0) return;
 
     // 解码压缩图像
     rclcpp::Time img_stamp;

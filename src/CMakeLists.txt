@@ -21,6 +21,9 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
+set(ONNXRUNTIME_INCLUDE_DIR /usr/local/include)
+set(ONNXRUNTIME_LIB_DIR /usr/local/lib)
+
 add_executable(behavior_detection_node
   src/avoiding_pedestrians.cpp
 )
@@ -28,6 +31,7 @@ add_executable(behavior_detection_node
 target_include_directories(behavior_detection_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
+  ${ONNXRUNTIME_INCLUDE_DIR}
 )
 
 ament_target_dependencies(behavior_detection_node
@@ -45,6 +49,7 @@ ament_target_dependencies(behavior_detection_node
 
 target_link_libraries(behavior_detection_node
   ${OpenCV_LIBRARIES}
+  ${ONNXRUNTIME_LIB_DIR}/libonnxruntime.so
 )
 
 install(TARGETS behavior_detection_node

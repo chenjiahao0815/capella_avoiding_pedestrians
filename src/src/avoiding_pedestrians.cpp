@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <iomanip>
 #include <limits>
+#include <onnxruntime_cxx_api.h>
 #include <opencv2/dnn.hpp>
 #include <opencv2/imgproc.hpp>
 #include <sstream>
@@ -19,53 +20,32 @@ using namespace std::chrono_literals;
 
 namespace
 {
-class OpenCvYoloTracker : public YoloTracker
+class OrtYoloTracker : public YoloTracker
 {
 public:
-    OpenCvYoloTracker(const std::string &model_path, const rclcpp::Logger &logger)
-        : logger_(logger)
+    OrtYoloTracker(const std::string &model_path, const rclcpp::Logger &logger)
+        : logger_(logger), env_(ORT_LOGGING_LEVEL_WARNING, "yolo")
     {
-        
         try {
-            net_ = cv::dnn::readNet(model_path);
-            if (net_.empty()) {
-                RCLCPP_ERROR(logger_, "Failed to load YOLO model: %s", model_path.c_str());
-                yolo_enabled_ = false;
-                return;
-            }
+            Ort::SessionOptions session_options;
+            session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_ALL);
+
+            // 配置 CUDA EP
+            OrtCUDAProviderOptions cuda_options;
+            cuda_options.device_id = 0;
+            session_options.AppendExecutionProvider_CUDA(cuda_options);
+
+            session_ = std::make_unique<Ort::Session>(env_, model_path.c_str(), session_options);
+
+            // 获取输入输出名称
+            auto input_name_ptr = session_->GetInputNameAllocated(0, allocator_);
+            input_name_ = input_name_ptr.get();
+            auto output_name_ptr = session_->GetOutputNameAllocated(0, allocator_);
+            output_name_ = output_name_ptr.get();
+
             yolo_enabled_ = true;
             RCLCPP_INFO(logger_, "YOLO model loaded: %s", model_path.c_str());
-
-            // 先尝试 GPU (CUDA)
-            bool gpu_available = false;
-            try {
-                net_.setPreferableBackend(cv::dnn::DNN_BACKEND_CUDA);
-                net_.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
-                net_.enableWinograd(false);  // 修复 CUDA 后端 NaN bug
-                
-                // 测试推理验证 GPU 是否可用
-                cv::Mat test_blob = cv::dnn::blobFromImage(cv::Mat::zeros(640, 640, CV_8UC3), 
-                                                           1.0/255.0, cv::Size(640, 640), 
-                                                           cv::Scalar(), true, false);
-                net_.setInput(test_blob);
-                std::vector<cv::Mat> test_outputs;
-                net_.forward(test_outputs);
-                
-                if (!test_outputs.empty()) {
-                    gpu_available = true;
-                }
-            } catch (...) {
-                gpu_available = false;
-            }
-
-            if (gpu_available) {
-                RCLCPP_INFO(logger_, "[YOLO] GPU backend enabled");
-            } else {
-                // 回退到 CPU
-                net_.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
-                net_.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
-                RCLCPP_INFO(logger_, "[YOLO] CPU backend enabled");
-            }
+            RCLCPP_INFO(logger_, "[YOLO] GPU backend enabled (ONNX Runtime CUDA EP)");
 
         } catch (const std::exception &e) {
             RCLCPP_ERROR(logger_, "Exception while loading YOLO model: %s", e.what());
@@ -83,34 +63,41 @@ public:
         cv::dnn::blobFromImage(frame, blob, 1.0 / 255.0,
                                cv::Size(input_size, input_size),
                                cv::Scalar(), true, false);
-        net_.setInput(blob);
 
-        std::vector<cv::Mat> outputs;
-        net_.forward(outputs, net_.getUnconnectedOutLayersNames());
-        if (outputs.empty()) return tracks;
+        // 创建输入 tensor
+        std::vector<int64_t> input_shape = {1, 3, 640, 640};
+        size_t input_tensor_size = 1 * 3 * 640 * 640;
+        auto memory_info = Ort::MemoryInfo::CreateCpu(OrtArenaAllocator, OrtMemTypeDefault);
+        Ort::Value input_tensor = Ort::Value::CreateTensor<float>(
+            memory_info, (float*)blob.data, input_tensor_size, input_shape.data(), input_shape.size());
 
-        const cv::Mat &out = outputs[0];
-        
+        // 推理
+        const char* input_names[] = {input_name_.c_str()};
+        const char* output_names[] = {output_name_.c_str()};
+        auto output_tensors = session_->Run(Ort::RunOptions{nullptr}, input_names, &input_tensor, 1, output_names, 1);
+
+        // 获取输出
+        float* output_data = output_tensors[0].GetTensorMutableData<float>();
+        auto output_shape = output_tensors[0].GetTensorTypeAndShapeInfo().GetShape();
+        // output_shape 应为 [1, 84, 8400]
+        int rows = output_shape[1];  // 84
+        int cols = output_shape[2];  // 8400
+
         // 第一次推理：打印原始输出健康状态
         static bool first_inference_logged = false;
         if (!first_inference_logged) {
             RCLCPP_INFO(logger_, "[YOLO] First inference raw output:");
-            RCLCPP_INFO(logger_, "[YOLO]   outputs.size() = %zu", outputs.size());
-            RCLCPP_INFO(logger_, "[YOLO]   out.dims = %d", out.dims);
-            if (out.dims >= 3) {
-                RCLCPP_INFO(logger_, "[YOLO]   out.shape = [%d, %d, %d]", 
-                    out.size[0], out.size[1], out.size[2]);
-            }
+            RCLCPP_INFO(logger_, "[YOLO]   output_shape = [%ld, %ld, %ld]", 
+                (long)output_shape[0], (long)output_shape[1], (long)output_shape[2]);
             
             // 统计非零值、min/max/mean
             float min_val = std::numeric_limits<float>::max();
             float max_val = std::numeric_limits<float>::lowest();
             double sum = 0.0;
             int non_zero = 0;
-            int total = out.total();
-            const float* ptr = out.ptr<float>();
+            int total = rows * cols;
             for (int i = 0; i < total; ++i) {
-                float v = ptr[i];
+                float v = output_data[i];
                 if (v != 0.0f) ++non_zero;
                 if (v < min_val) min_val = v;
                 if (v > max_val) max_val = v;
@@ -127,23 +114,19 @@ public:
             // 打印前几个值作为样本
             if (total >= 10) {
                 RCLCPP_INFO(logger_, "[YOLO]   sample values[0..9]: %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f",
-                    ptr[0], ptr[1], ptr[2], ptr[3], ptr[4], 
-                    ptr[5], ptr[6], ptr[7], ptr[8], ptr[9]);
+                    output_data[0], output_data[1], output_data[2], output_data[3], output_data[4], 
+                    output_data[5], output_data[6], output_data[7], output_data[8], output_data[9]);
             }
             first_inference_logged = true;
         }
 
-        if (out.dims != 3) return tracks;
-
         // YOLOv8 输出 [1, 84, 8400]  转置 [8400, 84]
         cv::Mat det;
-        if (out.size[1] < out.size[2]) {
-            cv::Mat raw(out.size[1], out.size[2], CV_32F,
-                        const_cast<float *>(out.ptr<float>()));
+        if (rows < cols) {
+            cv::Mat raw(rows, cols, CV_32F, (void*)output_data);
             cv::transpose(raw, det);
         } else {
-            det = cv::Mat(out.size[1], out.size[2], CV_32F,
-                          const_cast<float *>(out.ptr<float>())).clone();
+            det = cv::Mat(rows, cols, CV_32F, (void*)output_data).clone();
         }
 
         const int class_count = det.cols - 4;
@@ -215,7 +198,11 @@ public:
 private:
     rclcpp::Logger logger_;
     rclcpp::Clock clock_{RCL_SYSTEM_TIME};
-    cv::dnn::Net net_;
+    Ort::Env env_;
+    std::unique_ptr<Ort::Session> session_;
+    Ort::AllocatorWithDefaultOptions allocator_;
+    std::string input_name_;
+    std::string output_name_;
     bool yolo_enabled_{false};
 };
 }  // namespace
@@ -252,7 +239,7 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
             "Configured YOLO model is .pt (%s). Current C++ tracker uses OpenCV DNN and expects ONNX; please convert .pt to .onnx.",
             yolo_model_path.c_str());
     }
-    yolo_ = std::make_shared<OpenCvYoloTracker>(yolo_model_path, this->get_logger());
+    yolo_ = std::make_shared<OrtYoloTracker>(yolo_model_path, this->get_logger());
     laser_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     global_plan_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     local_poses_callback_group_ = this->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);

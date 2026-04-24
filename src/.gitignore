@@ -5,4 +5,5 @@ log/
 __pycache__/
 .DS_Store
 *onnx
+*pt
 

@@ -1,4 +1,6 @@
 #include "capella_avoiding_pedestrians/avoiding_pedestrians.hpp"
+#include <ament_index_cpp/get_package_share_directory.hpp>
+
 
 #include <sensor_msgs/image_encodings.hpp>
 #include <sensor_msgs/msg/compressed_image.hpp>
@@ -219,8 +221,12 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     avoid_hold_seconds_ = this->get_parameter("avoid_hold_seconds").as_double();
     person_conf_threshold_ = this->get_parameter("person_conf_threshold").as_double();
     //默认的模型的位置
+    // const std::string default_model_path =
+    //     (std::filesystem::path(__FILE__).parent_path() / "avoid_person.onnx").string();
+
     const std::string default_model_path =
-        (std::filesystem::path(__FILE__).parent_path() / "avoid_person.onnx").string();
+    ament_index_cpp::get_package_share_directory("capella_avoiding_pedestrians")
+    + "/avoid_person.onnx";    
 
     this->declare_parameter<std::string>("yolo_model_path", default_model_path);
     //默认的雷达和相机话题
@@ -303,6 +309,8 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
             this->timerCallback();
         });
 
+    last_avoiding_pub_time_ = this->now();
+
     // RCLCPP_INFO(this->get_logger(), "Behavior Detection Node initialized.");
     // RCLCPP_INFO(this->get_logger(), "capella_avoiding_pedestrians is ready");
 }
@@ -379,7 +387,7 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
     // 3) 人数变化时打印一次（只在人数>0时打印，但0也要更新记录）
     if (person_count != last_logged_person_count_) {
         if (person_count > 0) {
-            RCLCPP_WARN(
+            RCLCPP_INFO(
                 this->get_logger(),
                 "%d people have been detected, so approach",
                 person_count);
@@ -508,7 +516,7 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
             p.z = 0.0;
             result.pedestrians_laser.push_back(p);
             result.detected = true;
-            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
                 "[laser] matched! dist=%.2fm bbox_angle=[%.3f,%.3f]rad conf=%.2f",
                 distance, theta_min, theta_max, det.confidence);
         }
@@ -668,7 +676,7 @@ void BehaviorDetectionNode::timerCallback()
                         e.what(), det.laser_frame_id.c_str());
                 }
             }
-            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
                 "[timer] TF done: laser_peds=%zu -> map_peds=%zu",
                 det.pedestrians_laser.size(), pedestrians_map.size());
 
@@ -735,7 +743,7 @@ void BehaviorDetectionNode::timerCallback()
                     : false;
 
                 trigger_now = (on_global || on_local);
-                RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
+                RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000,
                     "[timer] on_global=%d on_local=%d trigger=%d",
                     on_global, on_local, trigger_now);
             }
@@ -761,19 +769,26 @@ void BehaviorDetectionNode::timerCallback()
         }
     }
 
-    if (is_avoiding != last_published_avoiding_) {
-        auto out = std_msgs::msg::Bool();
-        out.data = is_avoiding;
-        pub_avoiding_->publish(out);
-        //加个日志
-        if (is_avoiding) {
+    if (is_avoiding) {
+        const double dt = (now_time - last_avoiding_pub_time_).seconds();
+        if (dt >= 1.0 || !last_published_avoiding_) {
+            auto out = std_msgs::msg::Bool();
+            out.data = true;
+            pub_avoiding_->publish(out);
             ++warning_event_id_;
-            RCLCPP_WARN(
-                this->get_logger(),
+            RCLCPP_WARN(this->get_logger(),
                 "having pedestrians warning, id: %llu",
                 static_cast<unsigned long long>(warning_event_id_));
+            last_avoiding_pub_time_ = now_time;
         }
-        last_published_avoiding_ = is_avoiding;
+        last_published_avoiding_ = true;
+    } else {
+        if (last_published_avoiding_) {
+            auto out = std_msgs::msg::Bool();
+            out.data = false;
+            pub_avoiding_->publish(out);
+        }
+        last_published_avoiding_ = false;
     }
 }
 
@@ -869,19 +884,19 @@ bool BehaviorDetectionNode::checkPedestrianOnGlobalPath(
             const double dist_sq = dx * dx + dy * dy;
             if (dist_sq < min_dist_global) min_dist_global = dist_sq;
             if (dist_sq <= threshold_sq) {
+                if (!last_global_match_) {
+                    RCLCPP_INFO(this->get_logger(), "[global_path] matched, pedestrian on global path");
+                    last_global_match_ = true;
+                }
                 return true;
             }
         }
     }
-    RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
-        "[global_path] no match: min_dist=%.2fm threshold=%.2fm path_pts=%zu ped_pts=%zu path_frame='%s'",
-        std::sqrt(min_dist_global), threshold, optimized_points.size(), pedestrians.size(),
-        path.header.frame_id.c_str());
-    if (!pedestrians.empty()) {
-        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
-            "[global_path] ped[0] map=(%.2f,%.2f) path[0]=(%.2f,%.2f)",
-            pedestrians[0].point.x, pedestrians[0].point.y,
-            optimized_points[0].x, optimized_points[0].y);
+    if (last_global_match_) {
+        RCLCPP_INFO(this->get_logger(),
+            "[global_path] no match: min_dist=%.2fm threshold=%.2fm path_pts=%zu ped_pts=%zu",
+            std::sqrt(min_dist_global), threshold, optimized_points.size(), pedestrians.size());
+        last_global_match_ = false;
     }
 
     return false;
@@ -912,19 +927,19 @@ bool BehaviorDetectionNode::checkPedestrianOnLocalPath(
             const double dist_sq = dx * dx + dy * dy;
             if (dist_sq < min_dist_local) min_dist_local = dist_sq;
             if (dist_sq <= threshold_sq) {
+                if (!last_local_match_) {
+                    RCLCPP_INFO(this->get_logger(), "[local_path] matched, pedestrian on local path");
+                    last_local_match_ = true;
+                }
                 return true;
             }
         }
     }
-    RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
-        "[local_path] no match: min_dist=%.2fm threshold=%.2fm path_pts=%zu ped_pts=%zu path_frame='%s'",
-        std::sqrt(min_dist_local), threshold, optimized_points.size(), pedestrians.size(),
-        local_poses->header.frame_id.c_str());
-    if (!pedestrians.empty()) {
-        RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
-            "[local_path] ped[0] map=(%.2f,%.2f) path[0]=(%.2f,%.2f)",
-            pedestrians[0].point.x, pedestrians[0].point.y,
-            optimized_points[0].x, optimized_points[0].y);
+    if (last_local_match_) {
+        RCLCPP_INFO(this->get_logger(),
+            "[local_path] no match: min_dist=%.2fm threshold=%.2fm path_pts=%zu ped_pts=%zu",
+            std::sqrt(min_dist_local), threshold, optimized_points.size(), pedestrians.size());
+        last_local_match_ = false;
     }
 
     return false;

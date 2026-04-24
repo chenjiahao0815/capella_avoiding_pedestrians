@@ -125,9 +125,7 @@ private:
 	bool last_published_avoiding_{false}; //上一次发布的避让状态
 	bool last_global_match_{false};
 	bool last_local_match_{false};
-	rclcpp::Time last_avoiding_pub_time_;
 	rclcpp::Time last_pedestrian_detect_time_; //最近一次行人检测时间
-	rclcpp::Time last_detection_update_time_; //detection_result_ 最后一次写入时间
 	//行人的id
 	uint64_t warning_event_id_{0};
 

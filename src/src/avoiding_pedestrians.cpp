@@ -309,8 +309,6 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
             this->timerCallback();
         });
 
-    last_avoiding_pub_time_ = this->now();
-
     // RCLCPP_INFO(this->get_logger(), "Behavior Detection Node initialized.");
     // RCLCPP_INFO(this->get_logger(), "capella_avoiding_pedestrians is ready");
 }
@@ -470,18 +468,15 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
         if (det.class_id != 0) continue;
         if (det.confidence < static_cast<float>(person_conf_threshold_)) continue;
 
-        // 由检测框左右边界像素坐标计算相机水平角度范围
-        // 角度约定：图像中心为0，左正右 
         const float img_w = static_cast<float>(frame.cols);
         const float theta1 = (0.5F - det.bbox.x / img_w) * static_cast<float>(h_fov_rad_);
         const float theta2 = (0.5F - (det.bbox.x + det.bbox.width) / img_w) * static_cast<float>(h_fov_rad_);
         const float theta_min = std::min(theta1, theta2);
         const float theta_max = std::max(theta1, theta2);
 
-        // 在相机坐标系角度范围内搜索最近的激光点
         float distance = std::numeric_limits<float>::quiet_NaN();
-        float best_theta_l = 0.0F;  // 最近点在激光坐标系中的角度
-        float best_r = 0.0F;        // 最近点在激光坐标系中的距离
+        float best_theta_l = 0.0F;
+        float best_r = 0.0F;
         if (!laser_cam_pts.empty()) {
             float min_dist2d = std::numeric_limits<float>::max();
             for (const auto &lp : laser_cam_pts) {
@@ -509,7 +504,6 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
         }
 
         if (!std::isnan(distance)) {
-            // 用激光坐标系原始极坐标还原笛卡尔位置，保持坐标系一 
             geometry_msgs::msg::Point p;
             p.x = best_r * std::cos(best_theta_l);
             p.y = best_r * std::sin(best_theta_l);
@@ -521,7 +515,53 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
                 distance, theta_min, theta_max, det.confidence);
         }
 
-        // 绘制标注框，显示置信度和距离
+        // ---- 计算离最近路径点的距离 ----
+        float min_path_dist = std::numeric_limits<float>::quiet_NaN();
+        if (!std::isnan(distance)) {
+            // 把这个行人从激光坐标系转到 map
+            geometry_msgs::msg::PointStamped p_laser;
+            p_laser.header.frame_id = latest_scan ? latest_scan->header.frame_id : "";
+            p_laser.header.stamp = rclcpp::Time(0, 0, RCL_ROS_TIME);
+            p_laser.point.x = best_r * std::cos(best_theta_l);
+            p_laser.point.y = best_r * std::sin(best_theta_l);
+            p_laser.point.z = 0.0;
+
+            geometry_msgs::msg::PointStamped p_map;
+            bool tf_ok = false;
+            try {
+                tf_buffer_->transform(p_laser, p_map, "map", tf2::durationFromSec(0.05));
+                tf_ok = true;
+            } catch (const tf2::TransformException &) {
+                tf_ok = false;
+            }
+
+            if (tf_ok) {
+                // 和全局路径比
+                if (last_global_plan_ && !last_global_plan_->poses.empty()) {
+                    for (const auto &pose_stamped : last_global_plan_->poses) {
+                        const double dx = p_map.point.x - pose_stamped.pose.position.x;
+                        const double dy = p_map.point.y - pose_stamped.pose.position.y;
+                        const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy));
+                        if (std::isnan(min_path_dist) || d < min_path_dist) {
+                            min_path_dist = d;
+                        }
+                    }
+                }
+                // 和局部路径比，取更小的
+                if (last_local_poses_ && !last_local_poses_->poses.empty()) {
+                    for (const auto &pose : last_local_poses_->poses) {
+                        const double dx = p_map.point.x - pose.position.x;
+                        const double dy = p_map.point.y - pose.position.y;
+                        const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy));
+                        if (std::isnan(min_path_dist) || d < min_path_dist) {
+                            min_path_dist = d;
+                        }
+                    }
+                }
+            }
+        }
+
+        // ---- 绘制标注 ----
         const int x_raw = static_cast<int>(std::lround(det.bbox.x));
         const int y_raw = static_cast<int>(std::lround(det.bbox.y));
         const int w_raw = std::max(1, static_cast<int>(std::lround(det.bbox.width)));
@@ -532,19 +572,38 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
         const int h = std::min(h_raw, std::max(1, annotated.rows - y));
         cv::rectangle(annotated, cv::Rect(x, y, w, h), cv::Scalar(0, 0, 255), 2);
 
-        std::ostringstream label_stream;
-        label_stream << std::fixed << std::setprecision(2) << det.confidence;
+        // 第一行：置信度
+        std::ostringstream line1;
+        line1 << "conf: " << std::fixed << std::setprecision(2) << det.confidence;
+
+        // 第二行：离车距离（激光测距）
+        std::ostringstream line2;
         if (!std::isnan(distance)) {
-            label_stream << " " << std::fixed << std::setprecision(1) << distance << "m";
+            line2 << "dist: " << std::fixed << std::setprecision(2) << distance << "m";
+        } else {
+            line2 << "dist: N/A";
         }
-        cv::putText(
-            annotated,
-            label_stream.str(),
-            cv::Point(x, std::max(15, y - 5)),
-            cv::FONT_HERSHEY_SIMPLEX,
-            0.5,
-            cv::Scalar(0, 0, 255),
-            1);
+
+        // 第三行：离最近路径点距离
+        std::ostringstream line3;
+        if (!std::isnan(min_path_dist)) {
+            line3 << "path: " << std::fixed << std::setprecision(2) << min_path_dist << "m";
+        } else {
+            line3 << "path: N/A";
+        }
+
+        const double font_scale = 0.7;
+        const int thickness = 2;
+        const int font = cv::FONT_HERSHEY_SIMPLEX;
+        const int line_gap = 22;
+        const int text_y = std::max(20, y - 5);
+
+        cv::putText(annotated, line1.str(), cv::Point(x, text_y),
+                    font, font_scale, cv::Scalar(0, 255, 0), thickness);
+        cv::putText(annotated, line2.str(), cv::Point(x, text_y + line_gap),
+                    font, font_scale, cv::Scalar(0, 255, 255), thickness);
+        cv::putText(annotated, line3.str(), cv::Point(x, text_y + line_gap * 2),
+                    font, font_scale, cv::Scalar(255, 165, 0), thickness);
     }
 
     // 只要有人被YOLO检测到都发布标注图 
@@ -751,43 +810,44 @@ void BehaviorDetectionNode::timerCallback()
     }
 
     const rclcpp::Time now_time = this->now();
+
+    // 满足条件就刷新时间戳（重置3秒倒计时）
     if (trigger_now) {
         has_recent_detection_ = true;
         last_pedestrian_detect_time_ = now_time;
     }
 
+    // 判断当前是否处于避让状态
     bool is_avoiding = false;
-    if (trigger_now) {
-        is_avoiding = true;
-    } else if (has_recent_detection_) {
+    if (has_recent_detection_) {
         const double dt = (now_time - last_pedestrian_detect_time_).seconds();
         if (dt < avoid_hold_seconds_) {
             is_avoiding = true;
         } else {
+            // 3秒超时，清除状态
             has_recent_detection_ = false;
             is_avoiding = false;
         }
     }
 
-    if (is_avoiding) {
-        const double dt = (now_time - last_avoiding_pub_time_).seconds();
-        if (dt >= 1.0 || !last_published_avoiding_) {
-            auto out = std_msgs::msg::Bool();
-            out.data = true;
-            pub_avoiding_->publish(out);
-            ++warning_event_id_;
-            RCLCPP_WARN(this->get_logger(),
-                "having pedestrians warning, id: %llu",
-                static_cast<unsigned long long>(warning_event_id_));
-            last_avoiding_pub_time_ = now_time;
-        }
+    // 只在状态变化时发布，不重复发
+    if (is_avoiding && !last_published_avoiding_) {
+        // false -> true：发一次 true
+        auto out = std_msgs::msg::Bool();
+        out.data = true;
+        pub_avoiding_->publish(out);
+        ++warning_event_id_;
+        RCLCPP_WARN(this->get_logger(),
+            "having pedestrians warning, id: %llu",
+            static_cast<unsigned long long>(warning_event_id_));
         last_published_avoiding_ = true;
-    } else {
-        if (last_published_avoiding_) {
-            auto out = std_msgs::msg::Bool();
-            out.data = false;
-            pub_avoiding_->publish(out);
-        }
+    } else if (!is_avoiding && last_published_avoiding_) {
+        // true -> false：发一次 false
+        auto out = std_msgs::msg::Bool();
+        out.data = false;
+        pub_avoiding_->publish(out);
+        RCLCPP_INFO(this->get_logger(), "pedestrian warning cleared, id: %llu",
+            static_cast<unsigned long long>(warning_event_id_));
         last_published_avoiding_ = false;
     }
 }

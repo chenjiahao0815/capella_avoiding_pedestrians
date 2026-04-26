@@ -70,19 +70,14 @@ private:
 		const std::vector<geometry_msgs::msg::Point> &nav_points,
 		double min_distance,
 		double lookahead_distance);
-	//融合相机和激光数据用滤波跟踪行人
-    std::vector<geometry_msgs::msg::PointStamped> fuseAndTrackPedestrians(
-		const visualization_msgs::msg::MarkerArray::SharedPtr detections,
-		const sensor_msgs::msg::LaserScan::SharedPtr scan);
 
 	bool checkPedestrianOnGlobalPath(
 		const std::vector<geometry_msgs::msg::PointStamped> &pedestrians,
-		const nav_msgs::msg::Path &path,
-		double search_distance,
+		const std::vector<geometry_msgs::msg::Point> &downsampled_points,
 		double threshold);
 	bool checkPedestrianOnLocalPath(
 		const std::vector<geometry_msgs::msg::PointStamped> &pedestrians,
-		const geometry_msgs::msg::PoseArray::SharedPtr local_poses,
+		const std::vector<geometry_msgs::msg::Point> &downsampled_points,
 		double threshold);
 
 	rclcpp::CallbackGroup::SharedPtr laser_callback_group_;
@@ -96,19 +91,16 @@ private:
 	rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr pub_avoiding_;
 	//可视化的功能
 	rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_annotated_image_;
-	rclcpp::Publisher<geometry_msgs::msg::PoseArray>::SharedPtr pub_pedestrians_map_;
 	rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_pedestrians_markers_;
+	rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_downsampled_path_markers_;
 
 	std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
 	std::shared_ptr<tf2_ros::TransformListener> tf_listener_;
 
 	rclcpp::TimerBase::SharedPtr timer_;
 
-	sensor_msgs::msg::CompressedImage::SharedPtr last_rgb_; //最近RGB图像
-	sensor_msgs::msg::LaserScan::SharedPtr last_laser_; //最近激光数据
 	nav_msgs::msg::Path::SharedPtr last_global_plan_; //最近全局路径
 	geometry_msgs::msg::PoseArray::SharedPtr last_local_poses_; //最近局部路径
-	nav_msgs::msg::Path downsampled_global_plan_; //降采样后的全局路径
     //共享数据    
 	std::mutex detection_mutex_;
 	DetectionResult detection_result_;

@@ -254,8 +254,8 @@ BehaviorDetectionNode::BehaviorDetectionNode() : Node("behavior_detection_node")
     //警报话题
     pub_avoiding_ = this->create_publisher<std_msgs::msg::Bool>("is_avoiding_pedestrians", qos_transient_local);
     pub_annotated_image_ = this->create_publisher<sensor_msgs::msg::Image>("/rgb_camera_front/annotated_image", 10);
-    pub_pedestrians_map_ = this->create_publisher<geometry_msgs::msg::PoseArray>("/pedestrians/map", 10);
     pub_pedestrians_markers_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("/pedestrians/map_markers", 10);
+    pub_downsampled_path_markers_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("/downsampled_path/markers", 10);
     
     sub_camera_ = this->create_subscription<sensor_msgs::msg::CompressedImage>(
         camera_topic,
@@ -706,8 +706,96 @@ void BehaviorDetectionNode::localPosesCallback(const geometry_msgs::msg::PoseArr
 void BehaviorDetectionNode::timerCallback()
 {
     bool trigger_now = false;  // 默认没检测到 
+    const auto now_stamp = this->now();
 
     if (last_global_plan_ || last_local_poses_) {
+        // 提取并下采样路径点（复用给避让判断和可视化）
+        const double search_distance = this->get_parameter("global_search_distance").as_double();
+        const double threshold = this->get_parameter("pedestrian_distance_threshold").as_double();
+
+        const bool has_global_path = last_global_plan_ && !last_global_plan_->poses.empty();
+        const bool has_local_path = last_local_poses_ && !last_local_poses_->poses.empty();
+
+        std::vector<geometry_msgs::msg::Point> ds_global;
+        std::vector<geometry_msgs::msg::Point> ds_local;
+        if (has_global_path) {
+            std::vector<geometry_msgs::msg::Point> global_points;
+            global_points.reserve(last_global_plan_->poses.size());
+            for (const auto &pose_stamped : last_global_plan_->poses) {
+                global_points.push_back(pose_stamped.pose.position);
+            }
+            ds_global = downsamplePath(global_points, threshold, search_distance);
+        }
+        if (has_local_path) {
+            std::vector<geometry_msgs::msg::Point> local_points;
+            local_points.reserve(last_local_poses_->poses.size());
+            for (const auto &pose : last_local_poses_->poses) {
+                local_points.push_back(pose.position);
+            }
+            ds_local = downsamplePath(local_points, threshold, local_search_distance_);
+        }
+
+        // 可视化下采样路径点（只要有路径就发，独立于行人检测）
+        if (pub_downsampled_path_markers_) {
+            visualization_msgs::msg::MarkerArray ds_marker_array;
+            int marker_id = 0;
+
+            // 先清除旧的
+            visualization_msgs::msg::Marker delete_all;
+            delete_all.header.frame_id = "map";
+            delete_all.header.stamp = now_stamp;
+            delete_all.ns = "downsampled_path";
+            delete_all.id = marker_id++;
+            delete_all.action = visualization_msgs::msg::Marker::DELETEALL;
+            ds_marker_array.markers.push_back(delete_all);
+
+            // 全局路径下采样点（蓝色）
+            for (const auto &pt : ds_global) {
+                visualization_msgs::msg::Marker m;
+                m.header.frame_id = "map";
+                m.header.stamp = now_stamp;
+                m.ns = "downsampled_path";
+                m.id = marker_id++;
+                m.type = visualization_msgs::msg::Marker::SPHERE;
+                m.action = visualization_msgs::msg::Marker::ADD;
+                m.pose.position = pt;
+                m.pose.position.z = 0.05;
+                m.pose.orientation.w = 1.0;
+                m.scale.x = 0.15;
+                m.scale.y = 0.15;
+                m.scale.z = 0.15;
+                m.color.r = 0.0F;
+                m.color.g = 0.0F;
+                m.color.b = 1.0F;
+                m.color.a = 0.8F;
+                ds_marker_array.markers.push_back(m);
+            }
+
+            // 局部路径下采样点（黄色）
+            for (const auto &pt : ds_local) {
+                visualization_msgs::msg::Marker m;
+                m.header.frame_id = "map";
+                m.header.stamp = now_stamp;
+                m.ns = "downsampled_path";
+                m.id = marker_id++;
+                m.type = visualization_msgs::msg::Marker::SPHERE;
+                m.action = visualization_msgs::msg::Marker::ADD;
+                m.pose.position = pt;
+                m.pose.position.z = 0.05;
+                m.pose.orientation.w = 1.0;
+                m.scale.x = 0.15;
+                m.scale.y = 0.15;
+                m.scale.z = 0.15;
+                m.color.r = 1.0F;
+                m.color.g = 1.0F;
+                m.color.b = 0.0F;
+                m.color.a = 0.8F;
+                ds_marker_array.markers.push_back(m);
+            }
+
+            pub_downsampled_path_markers_->publish(ds_marker_array);
+        }
+
         DetectionResult det;
         {
             std::lock_guard<std::mutex> lock(detection_mutex_);
@@ -740,19 +828,14 @@ void BehaviorDetectionNode::timerCallback()
                 det.pedestrians_laser.size(), pedestrians_map.size());
 
             if (!pedestrians_map.empty()) {
-                // 发布可视 
-                geometry_msgs::msg::PoseArray poses_msg;
-                poses_msg.header.frame_id = "map";
-                poses_msg.header.stamp = this->now();
-                poses_msg.poses.reserve(pedestrians_map.size());
-
+                // 发布可视化
                 visualization_msgs::msg::MarkerArray marker_array;
                 marker_array.markers.reserve(pedestrians_map.size() + 1);
 
                 // 先清除旧的marker
                 visualization_msgs::msg::Marker delete_all;
                 delete_all.header.frame_id = "map";
-                delete_all.header.stamp = poses_msg.header.stamp;
+                delete_all.header.stamp = now_stamp;
                 delete_all.ns = "pedestrians";
                 delete_all.id = 0;
                 delete_all.action = visualization_msgs::msg::Marker::DELETEALL;
@@ -760,14 +843,10 @@ void BehaviorDetectionNode::timerCallback()
 
                 for (size_t i = 0; i < pedestrians_map.size(); ++i) {
                     const auto &p = pedestrians_map[i];
-                    geometry_msgs::msg::Pose pose;
-                    pose.position = p.point;
-                    pose.orientation.w = 1.0;
-                    poses_msg.poses.push_back(pose);
 
                     visualization_msgs::msg::Marker marker;
                     marker.header.frame_id = "map";
-                    marker.header.stamp = poses_msg.header.stamp;
+                    marker.header.stamp = now_stamp;
                     marker.ns = "pedestrians";
                     marker.id = static_cast<int>(i) + 1;
                     marker.type = visualization_msgs::msg::Marker::SPHERE;
@@ -784,21 +863,13 @@ void BehaviorDetectionNode::timerCallback()
                     marker_array.markers.push_back(marker);
                 }
 
-                if (pub_pedestrians_map_) pub_pedestrians_map_->publish(poses_msg);
                 if (pub_pedestrians_markers_) pub_pedestrians_markers_->publish(marker_array);
 
-                // 检查行人是否在规划路径 
-                const double search_distance = this->get_parameter("global_search_distance").as_double();
-                const double threshold = this->get_parameter("pedestrian_distance_threshold").as_double();
-
-                const bool has_global_path = last_global_plan_ && !last_global_plan_->poses.empty();
-                const bool has_local_path = last_local_poses_ && !last_local_poses_->poses.empty();
-
-                const bool on_global = has_global_path
-                    ? checkPedestrianOnGlobalPath(pedestrians_map, *last_global_plan_, search_distance, threshold)
+                const bool on_global = has_global_path && !ds_global.empty()
+                    ? checkPedestrianOnGlobalPath(pedestrians_map, ds_global, threshold)
                     : false;
-                const bool on_local = has_local_path
-                    ? checkPedestrianOnLocalPath(pedestrians_map, last_local_poses_, threshold)
+                const bool on_local = has_local_path && !ds_local.empty()
+                    ? checkPedestrianOnLocalPath(pedestrians_map, ds_local, threshold)
                     : false;
 
                 trigger_now = (on_global || on_local);
@@ -809,18 +880,16 @@ void BehaviorDetectionNode::timerCallback()
         }
     }
 
-    const rclcpp::Time now_time = this->now();
-
     // 满足条件就刷新时间戳（重置3秒倒计时）
     if (trigger_now) {
         has_recent_detection_ = true;
-        last_pedestrian_detect_time_ = now_time;
+        last_pedestrian_detect_time_ = now_stamp;
     }
 
     // 判断当前是否处于避让状态
     bool is_avoiding = false;
     if (has_recent_detection_) {
-        const double dt = (now_time - last_pedestrian_detect_time_).seconds();
+        const double dt = (now_stamp - last_pedestrian_detect_time_).seconds();
         if (dt < avoid_hold_seconds_) {
             is_avoiding = true;
         } else {
@@ -850,15 +919,6 @@ void BehaviorDetectionNode::timerCallback()
             static_cast<unsigned long long>(warning_event_id_));
         last_published_avoiding_ = false;
     }
-}
-
-std::vector<geometry_msgs::msg::PointStamped> BehaviorDetectionNode::fuseAndTrackPedestrians(
-    const visualization_msgs::msg::MarkerArray::SharedPtr detections,
-    const sensor_msgs::msg::LaserScan::SharedPtr scan)
-{
-    (void)detections;
-    (void)scan;
-    return {};
 }
 
 std::vector<geometry_msgs::msg::Point> BehaviorDetectionNode::downsamplePath(
@@ -920,25 +980,15 @@ std::vector<geometry_msgs::msg::Point> BehaviorDetectionNode::downsamplePath(
 
 bool BehaviorDetectionNode::checkPedestrianOnGlobalPath(
     const std::vector<geometry_msgs::msg::PointStamped> &pedestrians,
-    const nav_msgs::msg::Path &path,
-    double search_distance,
+    const std::vector<geometry_msgs::msg::Point> &downsampled_points,
     double threshold)
 {
-    if (pedestrians.empty() || path.poses.empty()) return false;
-
-    std::vector<geometry_msgs::msg::Point> global_points;
-    global_points.reserve(path.poses.size());
-    for (const auto &pose_stamped : path.poses) {
-        global_points.push_back(pose_stamped.pose.position);
-    }
-
-    const auto optimized_points = downsamplePath(global_points, threshold, search_distance);
-    if (optimized_points.empty()) return false;
+    if (pedestrians.empty() || downsampled_points.empty()) return false;
 
     const double threshold_sq = threshold * threshold;
     double min_dist_global = std::numeric_limits<double>::max();
     for (const auto &ped : pedestrians) {
-        for (const auto &pt : optimized_points) {
+        for (const auto &pt : downsampled_points) {
             const double dx = ped.point.x - pt.x;
             const double dy = ped.point.y - pt.y;
             const double dist_sq = dx * dx + dy * dy;
@@ -955,7 +1005,7 @@ bool BehaviorDetectionNode::checkPedestrianOnGlobalPath(
     if (last_global_match_) {
         RCLCPP_INFO(this->get_logger(),
             "[global_path] no match: min_dist=%.2fm threshold=%.2fm path_pts=%zu ped_pts=%zu",
-            std::sqrt(min_dist_global), threshold, optimized_points.size(), pedestrians.size());
+            std::sqrt(min_dist_global), threshold, downsampled_points.size(), pedestrians.size());
         last_global_match_ = false;
     }
 
@@ -964,24 +1014,15 @@ bool BehaviorDetectionNode::checkPedestrianOnGlobalPath(
 
 bool BehaviorDetectionNode::checkPedestrianOnLocalPath(
     const std::vector<geometry_msgs::msg::PointStamped> &pedestrians,
-    const geometry_msgs::msg::PoseArray::SharedPtr local_poses,
+    const std::vector<geometry_msgs::msg::Point> &downsampled_points,
     double threshold)
 {
-    if (pedestrians.empty() || !local_poses || local_poses->poses.empty()) return false;
-
-    std::vector<geometry_msgs::msg::Point> local_points;
-    local_points.reserve(local_poses->poses.size());
-    for (const auto &pose : local_poses->poses) {
-        local_points.push_back(pose.position);
-    }
-
-    const auto optimized_points = downsamplePath(local_points, threshold, local_search_distance_);
-    if (optimized_points.empty()) return false;
+    if (pedestrians.empty() || downsampled_points.empty()) return false;
 
     const double threshold_sq = threshold * threshold;
     double min_dist_local = std::numeric_limits<double>::max();
     for (const auto &ped : pedestrians) {
-        for (const auto &pt : optimized_points) {
+        for (const auto &pt : downsampled_points) {
             const double dx = ped.point.x - pt.x;
             const double dy = ped.point.y - pt.y;
             const double dist_sq = dx * dx + dy * dy;
@@ -998,7 +1039,7 @@ bool BehaviorDetectionNode::checkPedestrianOnLocalPath(
     if (last_local_match_) {
         RCLCPP_INFO(this->get_logger(),
             "[local_path] no match: min_dist=%.2fm threshold=%.2fm path_pts=%zu ped_pts=%zu",
-            std::sqrt(min_dist_local), threshold, optimized_points.size(), pedestrians.size());
+            std::sqrt(min_dist_local), threshold, downsampled_points.size(), pedestrians.size());
         last_local_match_ = false;
     }
 

@@ -1,0 +1,3 @@
+string ssid  #wifi SSID code
+---
+bool success

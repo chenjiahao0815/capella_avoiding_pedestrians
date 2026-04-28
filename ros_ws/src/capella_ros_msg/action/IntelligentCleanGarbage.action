@@ -1,0 +1,9 @@
+# Request
+# 垃圾的位姿
+GarbageDetectSingle[] garbages
+---
+# Result
+# 没清理的垃圾列表，如果为空表示全部清理
+GarbageDetectSingle[] unclean_garbages
+---
+# Feedback

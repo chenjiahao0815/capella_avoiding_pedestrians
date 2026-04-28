@@ -1,0 +1,5 @@
+geometry_msgs/PoseStamped robot_pose
+geometry_msgs/PoseStamped car_pose
+geometry_msgs/Vector3 size
+---
+bool is_car_passable

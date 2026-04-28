@@ -1,0 +1,16 @@
+# Request
+# 启动跟随时，搜索跟随目标超时时间
+float32 start_timeout
+# 跟随中，搜索跟随目标超时时间
+float32 execute_timeout
+---
+# Result
+# 执行跟随时超时退出：true; 启动跟随时超时退出：false
+bool exit
+
+---
+# 目标跟随的执行状态:
+# 0: 正在寻找目标;
+# 1: 正在跟随目标;
+# 2: 目标丢失，正在重新寻找目标
+uint8 status

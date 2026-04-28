@@ -1,0 +1,13 @@
+# Request
+# polygons通行区域的四个顶点
+geometry_msgs/Polygon[] polygons
+# 汽车的长,宽
+geometry_msgs/Vector3 car_size
+# 汽车的位姿
+geometry_msgs/PoseStamped car_pose
+---
+# Result
+# 汽车相对map坐标系的位姿
+geometry_msgs/PoseStamped pose
+---
+# Feedback

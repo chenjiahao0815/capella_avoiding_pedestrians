@@ -1,0 +1,2 @@
+uint8 ir1_data
+uint8 ir2_data

@@ -1,0 +1,16 @@
+#request
+geometry_msgs/PoseStamped pose
+---
+#result
+bool success
+float64 execution_time
+---
+#feedback
+uint8 NAVIGATETOPOSE = 0
+uint8 MOVETOGOAL = 1
+uint8 ENTERELEVATOR = 2
+uint8 state
+float64 execution_time_navigate_to_pose
+float64 execution_time_turn_the_pose
+float64 execution_time_enter_the_elevator
+float64 distance_remaining

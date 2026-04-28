@@ -1,0 +1,5 @@
+# stop nav and carto : STOP_CMD = 0
+uint8 STOP_CMD = 0
+---
+# if nav and carto are both off : status = 0
+uint8 status

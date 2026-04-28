@@ -1,0 +1,11 @@
+#gola defination
+# spin until target localization score
+float32 target
+
+---
+#result defination
+float32 final_localization_score
+
+---
+#feedback defination
+float32 localizaiton_score

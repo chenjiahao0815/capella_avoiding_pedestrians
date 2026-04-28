@@ -1,0 +1,13 @@
+geometry_msgs/Polygon[] polygons   # 机器人要遍历的通道列表
+geometry_msgs/PoseStamped car_pose # 汽车的位置信息
+---
+bool success                       # 是否成功执行
+string reason                      # 被拒绝的原因
+nav_msgs/Path path                 # 当前生成的path
+geometry_msgs/PoseStamped[] poses  # 用作NavigateThrouthPose goals
+---
+
+
+
+
+

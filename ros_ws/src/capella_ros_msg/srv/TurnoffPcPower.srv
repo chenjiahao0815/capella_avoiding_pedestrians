@@ -1,0 +1,3 @@
+bool request_stu  #request should set true
+---
+bool response_stu #request success, response return true, else return false

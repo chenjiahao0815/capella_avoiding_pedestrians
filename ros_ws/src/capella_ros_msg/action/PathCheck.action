@@ -1,0 +1,5 @@
+float32 distance
+geometry_msgs/PoseStamped[] input_goals
+---
+geometry_msgs/PoseStamped[] output_goals
+---

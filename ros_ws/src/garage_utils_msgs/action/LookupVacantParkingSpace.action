@@ -1,0 +1,7 @@
+#
+float64 timeout                        # 允许的最大运行时间，单位：秒
+---
+geometry_msgs/PoseStamped  pose        # 生成目标pose的方向：垂直与polygon的边，朝向边的方向
+---
+float64 cost_time                      # 寻找车位耗费的时间，单位：秒
+

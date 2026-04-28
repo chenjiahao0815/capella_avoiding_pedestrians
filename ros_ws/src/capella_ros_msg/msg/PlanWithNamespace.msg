@@ -1,0 +1,2 @@
+string namespace_name
+nav_msgs/Path path

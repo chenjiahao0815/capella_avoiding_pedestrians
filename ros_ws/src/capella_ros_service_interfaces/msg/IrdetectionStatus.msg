@@ -1,0 +1,1 @@
+uint8 irdetection_status # "1" irdetection on ; "0" irdetection off

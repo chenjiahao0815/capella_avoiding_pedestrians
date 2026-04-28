@@ -1,0 +1,8 @@
+# Request
+---
+# Result
+bool is_docked
+bool success
+bool sees_charger
+---
+# Feedback

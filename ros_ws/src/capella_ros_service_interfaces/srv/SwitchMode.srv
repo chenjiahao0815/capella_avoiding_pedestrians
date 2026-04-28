@@ -1,0 +1,10 @@
+uint8 MODE_IDLE=0
+uint8 MODE_NAV=1
+uint8 MODE_CARTO=2
+
+uint8 mode
+---
+uint8 STATUS_OK=0
+uint8 STATUS_FAILED=255
+
+uint8 status

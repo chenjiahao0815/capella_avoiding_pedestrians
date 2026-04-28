@@ -1,0 +1,2 @@
+bool passable
+CarDetectArray car_information

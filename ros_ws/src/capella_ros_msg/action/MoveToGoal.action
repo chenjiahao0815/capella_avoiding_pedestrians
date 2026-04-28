@@ -1,0 +1,12 @@
+#request
+geometry_msgs/Pose pose
+---
+#result
+bool success
+---
+#feedback
+geometry_msgs/Point current_pose
+float64 current_yaw
+float64 distance_remaining
+float64 cmd_linear
+float64 cmd_angular

@@ -1,0 +1,39 @@
+linux@DESKTOP-230CIAL:~/c++/amodel$ python3 pt2onnx.py avoid_person.pt -o avoid_person.onnx
+Loading: /home/linux/c++/amodel/avoid_person.pt
+
+Export config:
+  Input size : 640x640
+  Precision  : FP32 (half=False)
+  Simplify   : True (ultralytics built-in)
+  Opset      : 12
+  Dynamic    : False (static batch=1)
+  Output     : /home/linux/c++/amodel/avoid_person.onnx
+
+Ultralytics 8.3.250 🚀 Python-3.10.12 torch-2.0.1+cu118 CPU (13th Gen Intel Core i5-13400F)
+YOLOv8s summary (fused): 72 layers, 11,156,544 parameters, 0 gradients, 28.6 GFLOPs
+
+PyTorch: starting from '/home/linux/c++/amodel/avoid_person.pt' with input shape (1, 3, 640, 640) BCHW and output shape(s) (1, 84, 8400) (21.5 MB)
+
+ONNX: starting export with onnx 1.17.0 opset 12...
+============= Diagnostic Run torch.onnx.export version 2.0.1+cu118 =============
+verbose: False, log level: Level.ERROR
+======================= 0 NONE 0 NOTE 0 WARNING 0 ERROR ========================
+
+ONNX: slimming with onnxslim 0.1.89...
+ONNX: export success ✅ 1.2s, saved as '/home/linux/c++/amodel/avoid_person.onnx' (42.8 MB)
+
+Export complete (1.5s)
+Results saved to /home/linux/c++/amodel
+Predict:         yolo predict task=detect model=/home/linux/c++/amodel/avoid_person.onnx imgsz=640  
+Validate:        yolo val task=detect model=/home/linux/c++/amodel/avoid_person.onnx imgsz=640 data=coco.yaml  
+Visualize:       https://netron.app
+Saved to: /home/linux/c++/amodel/avoid_person.onnx
+
+ONNX validation passed.
+
+Model I/O (for your C++ code):
+  Input : images  -> [1, 3, 640, 640]
+  Output: output0  -> [1, 84, 8400]
+
+Done. Reference this path in your C++ node:
+  std::string model_path = "avoid_person.onnx";

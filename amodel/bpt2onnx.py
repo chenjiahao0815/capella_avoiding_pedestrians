@@ -102,7 +102,7 @@ def main():
     
     if args.output is None:
         # 默认输出到你的 C++ ROS2 包 config 目录
-        config_dir = Path("/home/linux/ws2/capella_inspection_cpp/config")
+        config_dir = Path("/home/linux/c++/amodel/")
         config_dir.mkdir(exist_ok=True)
         args.output = str(config_dir / f"{pt.stem}.onnx")
     

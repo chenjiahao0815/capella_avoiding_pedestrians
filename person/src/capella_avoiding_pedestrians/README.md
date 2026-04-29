@@ -1,1 +1,0 @@
-# capella_avoiding_pedestrians

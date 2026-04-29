@@ -1,8 +1,0 @@
-build/
-install/
-log/
-*.o
-*.exe
-*.pt
-*.yaml
-*.db3

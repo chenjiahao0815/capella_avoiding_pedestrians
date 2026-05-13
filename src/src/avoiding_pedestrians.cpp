@@ -382,16 +382,16 @@ void BehaviorDetectionNode::imageCallback(const sensor_msgs::msg::CompressedImag
         first_pedestrian_detected_logged_ = true;
     }
 
-    // 3) 人数变化时打印一次（只在人数>0时打印，但0也要更新记录）
-    if (person_count != last_logged_person_count_) {
-        if (person_count > 0) {
-            RCLCPP_INFO(
-                this->get_logger(),
-                "%d people have been detected, so approach",
-                person_count);
-        }
-        last_logged_person_count_ = person_count;
-    }
+    // // 3) 人数变化时打印一次
+    // if (person_count != last_logged_person_count_) {
+    //     if (person_count > 0) {
+    //         RCLCPP_INFO(
+    //             this->get_logger(),
+    //             "%d people have been detected, so approach",
+    //             person_count);
+    //     }
+    //     last_logged_person_count_ = person_count;
+    // }
 
     // 获取最新的激光雷达数 
     sensor_msgs::msg::LaserScan::SharedPtr latest_scan;
